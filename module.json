@@ -7,17 +7,19 @@
       "discord": "jacobwojo#6005"
     }
   ],
-  "version": "1.0.0",
   "compatibility": {
     "minimum": "11",
     "verified": "11"
   },
   "scripts": [
+    "scripts/classes/globals.js",
+    "scripts/classes/handlebars-helpers.js",
+    "scripts/classes/hooks.js",
     "scripts/classes/test_deffendFormClass.js",
     "scripts/classes/test_deffendFormTemplate.hbs"
   ],
   "styles": [
-    "styles/defense_check.css"
+    "styles/pf2e-defense-check.css"
   ],
   "languages": [
     {
@@ -27,10 +29,11 @@
       "flags": {}
     }
   ],
-  "download": "",
-  "manifest": "",
-  "changelog": "",
-  "readme": "",
-  "url": "",
+  "version": "1.0.0",
+  "download": "https://github.com/jacobwojoski/pf2e-defense-check/archive/refs/tags/v1.0.0.zip",
+  "manifest": "https://github.com/jacobwojoski/pf2e-defense-check/releases/latest/download/module.json",
+  "changelog": "https://github.com/jacobwojoski/pf2e-defense-check/blob/main/CHANGELOG.md",
+  "readme": "https://github.com/jacobwojoski/pf2e-defense-check",
+  "url": "https://github.com/jacobwojoski/pf2e-defense-check",
   "description": "No more GM attack rolls. Let the player roll to defend instead."
 }

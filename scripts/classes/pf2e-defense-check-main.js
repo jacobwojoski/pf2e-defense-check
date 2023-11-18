@@ -1,49 +1,6 @@
 DEFFENDER_FORM_OBJ = null;
 
-class DEFFEND_CHECK_GLOBALS {
-    
-    static NUM_BONUS_TYPES_SIGNED = 14;
-    static BONUS_TYPES_SIGNED ={
-        ATTRIBUTE_POS:      0,
-        PROFICENCY_POS:     1,
-        POTENCY_POS:        2,
-        ITEM_POS:           3,
-        STATUS_POS:         4,
-        CIRCUMSTANCE_POS:   5,
-        UNTYPED_POS:        6,
-        ATTRIBUTE_NEG:      7,
-        PROFICENCY_NEG:     8,
-        POTENCY_NEG:        9,
-        ITEM_NEG:           10,
-        STATUS_NEG:         11,
-        CIRCUMSTANCE_NEG:   12,
-        UNTYPED_NEG:        13
-    };
-
-    static NUM_BONUS_TYPES = 7;
-
-    static BONUS_TYPES = {
-        ATTRIBUTE:      0,
-        PROFICENCY:     1,
-        POTENCY:        2,
-        ITEM:           3,
-        STATUS:         4,
-        CIRCUMSTANCE:   5,
-        UNTYPED:        6
-    };
-
-    static ROLL_TYPE = {
-        PUBLIC: 0,
-        GM:     1,
-        BLIND:  2,
-        SELF:   3
-    };
-
-    static BONUS_TYPE_TO_NAMES = ["Attribute","Proficency","Potency","Item","Status","Circumstance","Untyped"];
-    static BONUS_TYPE_SIGNED_TO_NAMES = ["Attribute","Attribute","Proficency","Proficency","Potency","Potency","Item","Item","Status","Status","Circumstance","Circumstance","Untyped","Untyped"];
-}
-
-
+// Class that holds all modifier info. 
 class CustomBonusClass {
     BonusName =         "";     /* STRING */
     BonusType =         0;      /* BONUS_TYPES */
@@ -64,6 +21,7 @@ class CustomBonusClass {
     }
 }
 
+// Class that holds 2 modifers. Hold the base and the override value
 class CustomPlayerBonus {
     BonusType=0;
     DefaultBonus =  {};
@@ -89,6 +47,9 @@ class CustomPlayerBonus {
         }
     }
 }
+
+// Main displau form. This form needs to retriev the data, calc, Allow adjustments from user
+// and display all the info
 
 class DefendCheckForm extends FormApplication {
     static formData = {
@@ -120,14 +81,16 @@ class DefendCheckForm extends FormApplication {
     static get defaultOptions(){
         return mergeObject(super.defaultOptions, {
             popOut: true,
-            template: `modules/dice-stats/scripts/classes/test_deffendFormTemplate.hbs`,
+            template: DEFFEND_CHECK_GLOBALS.DEFNSE_CHECK_TEMPLATE,
             id: 'deffend-form-id',
             title: 'Deffend Form',
         });
     }
 
     /**
-     * This funtion updates the defaultPlayerBonus field
+     * This funtion 
+     * - parse the actor you selected to find current AC Modifiers
+     * - update the defaultPlayerBonus with those modifiers
      * @returns void
      */
     static parsePlayerData(){
@@ -397,43 +360,6 @@ class DefendCheckForm extends FormApplication {
 }
 
 
-Hooks.once('init', () => {
-    DEFFENDER_FORM_OBJ = new DefendCheckForm();
-})
-
-Hooks.on('renderActorSheet', (app, html, options) => {
-    console.log("RENDER ACTOR SHEET FINDING THE HTML");
-
-    const deffenderbutton = html.find(`[class="shield-stats"]`);
-    const btnPlacement = deffenderbutton.find('ol');
-    let tooltip = "Roll A Defense(AC) Check against the targets Attack DC";
-    let actorID = options.actor._id;
-
-    if(deffenderbutton.length)
-    {
-        let customRollDefenseButton = `<ol><button type="button" data-action='${actorID}' title='${tooltip}' id="defense_roll_check_module_btn" class="defense-button"><i class="defense-button-icon fas fa-dice-d20"></i></button></ol>`;
-        btnPlacement.append(
-            customRollDefenseButton
-        );
-
-        html.on('click', `#defense_roll_check_module_btn`, (event)=> {
-            console.log("ROLL DEFFEND BUTTON PRESSED!");
-            
-            //Check if were owner of selected actor or the GM
-            let isOwner = false;
-            if(game.user.isGM){
-                isOwner=true
-            }
-
-            if(isOwner){
-                //We own the charcter so allow defense roll to occour
-                DEFFENDER_FORM_OBJ = new DefendCheckForm(event.currentTarget.attributes[1].value).render(true);
-            }          
-        });
-    }
-});
-
-
 /**
  * - Hook to add deffend button to chat window on spell attacks?
  * - Use button in defend reaction by using </scripts> field to call Mod stuff can use same button ID?
@@ -445,46 +371,3 @@ Hooks.on('renderActorSheet', (app, html, options) => {
  */
 
 
-/* ==================================================== */
-/* =============== Handlebars Helpers ================= */
-/* ==================================================== */
-
-//Handlenars helper to get bonus description/Name from data model
-Handlebars.registerHelper('defend_form_get_bonus_name', function (playerBonusInfo, options){
-    let retVal;
-    if(playerBonusInfo.isBonusOverridden)
-    {
-        retVal = playerBonusInfo.OverrideBonus.BonusName;
-    }else{
-        retVal = playerBonusInfo.DefaultBonus.BonusName;
-    }
-    return String(retVal);
-});
-
-//Handlebars helper to get bonus value from data model
-Handlebars.registerHelper('defend_form_get_bonus_value', function (playerBonusInfo, options){
-    let retVal;
-    if(playerBonusInfo.isBonusOverridden)
-    {
-        retVal = playerBonusInfo.OverrideBonus.BonusValue;
-    }else{
-        retVal = playerBonusInfo.DefaultBonus.BonusValue;
-    }
-    return String(retVal);
-});
-
-//Handlebars helper used to display check on or off on the checkboxes
-Handlebars.registerHelper('defend_form_IsChecked', function (bool, options) {
-    if(bool){
-        return 'checked="checked"'
-    }
-    return ""
-});
-
-//Handlebars helper used to display check on or off on the checkboxes
-Handlebars.registerHelper('defend_form_getBonusTotal', function (value, options) {
-    if(value > 0){
-        return '+'+String(value);
-    }else
-    return String(value);
-});
