@@ -255,48 +255,29 @@ class DefendCheckForm extends FormApplication {
         //
     }
 
-    //Handle button events made on the form
-    async _handleButtonClick(event){
-        const clickedElement = $(event.currentTarget);
-        const action = clickedElement.data().action;
-        const value = clickedElement.data().value;
-
-        switch(action){
-            case 'rollTypeDropdown':
-                break;
-            case 'rollButton':
-                break;
-
-            case 'targetInputAttackDC':
-                break;
-
-            case 'overrideSlider':
-                break;
-            
-            case 'inputModifierName':
-                break;
-            case 'inputModifierType':
-                break;
-            case 'inputModifierValue':
-                break;
-            case 'inputModifierConfirm':
-                break;
-        }
-
-        //Refresh
-        DEFFENDER_FORM_OBJ.render(true);
-    }
-
     // ==============================================
     // ========= OVERRIDE INPUT STUFF ===============
     // ==============================================
 
     //Handle any selections on any of the override checkbox's
     async _handleOverrideCheckbox(event){
+        let plyrData = DefendCheckForm.formData;
+        let modifierType = event.id.value;
+
+        let plyrBonusData = plyrData.playerBonuses_Ary[modifierType];
+        
         //Check if there is an override Value
+        if(plyrBonusData.OverrideBonus.BonusValue != 0){
+            //Set Use override to ON
+            plyrBonusData.isBonusOverridden = true;
+
+        }else{
             //Display Warning if NO OVERRIDE
-        //Set Use override to ON
+            let warnString = "No Override Value saved";
+        }
+
         //Refresh Screen to display new info
+        DEFFENDER_FORM_OBJ.render(true);
     }
 
     //Handle Text input for Override Bonus Text Field
@@ -328,8 +309,22 @@ class DefendCheckForm extends FormApplication {
     async _handleNewOverrideBonusTypeConfirmButton(event){
         //Confirm New override if replacing an existing Override value
         //Save New bonus to data model
+        let plyrData = DefendCheckForm.formData;
+        let modifierType = event.id.value;
+        let plyrBonusData = plyrData.playerBonuses_Ary[modifierType];
+        
+        let overrideObj = DefendCheckForm.formData.overrideInputValues;
+        plyrBonusData.BonusName = overrideObj.bonusName;
+        plyrBonusData.BonusValue = overrideObj.bonusValue;
+        plyrBonusData.isPos = !overrideObj.isNeg;
+
         //Reset currently saved data in override data store
+        overrideObj.bonusName = "";
+        overrideObj.bonusValue = 0;
+        overrideObj.isNeg = false;
+
         //Rerender
+        DEFFENDER_FORM_OBJ.render(true);
     }
 
     // ============ END OVERRIDE INPUTS =================
@@ -380,6 +375,7 @@ class DefendCheckForm extends FormApplication {
  * - Melee Attack, Ranged Attack, Spell Attack Selector
  * - Range Modifier for ranged attacks
  * -  //*TODO* ON CLOSE OR ROLL CLEAR ALL SAVED DATA
+ * -  //*TODO* move isBonusApplied_Ary inside playerBonusAry onjects
  */
 
 
