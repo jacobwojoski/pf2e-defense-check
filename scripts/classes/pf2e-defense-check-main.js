@@ -287,6 +287,10 @@ class DefendCheckForm extends FormApplication {
         DEFFENDER_FORM_OBJ.render(true);
     }
 
+    // ==============================================
+    // ========= OVERRIDE INPUT STUFF ===============
+    // ==============================================
+
     //Handle any selections on any of the override checkbox's
     async _handleOverrideCheckbox(event){
         //Check if there is an override Value
@@ -328,11 +332,19 @@ class DefendCheckForm extends FormApplication {
         //Rerender
     }
 
+    // ============ END OVERRIDE INPUTS =================
+
+    // ==================================================
+    // ================ ATTACK DC INPUTS ================
+    // ==================================================
     async _handleDefenceCheckDCInput(event){
         const targetsAttackDCValue = event.target.value;
         DefendCheckForm.formData.targetsAttackDC = targetsAttackDCValue;
     }
 
+    // ==================================================
+    // ================== ROLL SELECTIONS ===============
+    // ==================================================
     async _handleRollTypedropdown(Event){
         
     }
