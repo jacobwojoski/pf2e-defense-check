@@ -252,7 +252,49 @@ class DefendCheckForm extends FormApplication {
     }
 
     createRollMessage(){
-        //
+        const customCSS = `
+        .custom-hit-by {
+            background-color: #ffcc00;
+            border: 2px solid #ff9900;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .custom-miss {
+            background-color: #ffcc00;
+            border: 2px solid #ff9900;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        `;
+
+        // Inject the custom CSS into the document head
+        const styleElement = document.createElement("style");
+        styleElement.innerHTML = customCSS;
+        document.head.appendChild(styleElement);
+
+        // Define a roll formula and roll the dice
+        const rollFormula = '2d6+3';
+        const roll = new Roll(rollFormula).roll();
+
+        // Create a custom chat message with roll data
+        const chatData = {
+            content: `
+            <div class="custom-miss">
+                <p>This is a custom chat message with a roll:</p>
+                <p>Roll Formula: ${rollFormula}</p>
+                <p>Result: ${roll.total}</p>
+                ${game.user.isGM ? '<p>GM Only: This sentence is visible only to the GM.</p>' : ''}
+            </div>
+            `,
+            speaker: ChatMessage.getSpeaker({ actor: game.user.character }),
+            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            roll: roll,
+        };
+
+        // Send the custom chat message to the chat log
+        ChatMessage.create(chatData, {});
     }
 
     // ==============================================
@@ -274,6 +316,7 @@ class DefendCheckForm extends FormApplication {
         }else{
             //Display Warning if NO OVERRIDE
             let warnString = "No Override Value saved";
+            ui.notifications.warn(warnString);
         }
 
         //Refresh Screen to display new info
@@ -346,6 +389,9 @@ class DefendCheckForm extends FormApplication {
 
     async _handleRollButton(){
         //ASK GM FOR CHECK VALUE SOMEHOW?
+
+        //create and display message
+        this.createRollMessage();
     }
     
     activateListeners(html) {
