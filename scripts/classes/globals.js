@@ -1,6 +1,6 @@
 class DEFFEND_CHECK_GLOBALS {
     
-    static DEFNSE_CHECK_TEMPLATE = 'modules/dice-stats/scripts/classes/test_deffendFormTemplate.hbs';
+    static DEFNSE_CHECK_TEMPLATE = 'modules/dice-stats/templates/deffendFormTemplate.hbs';
 
     static NUM_BONUS_TYPES_SIGNED = 14;
     static BONUS_TYPES_SIGNED = {

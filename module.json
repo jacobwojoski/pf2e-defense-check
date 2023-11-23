@@ -20,6 +20,9 @@
   "styles": [
     "styles/pf2e-defense-check.css"
   ],
+  "templates": [
+    "templates/defendFormTemplate.hbs"
+  ],
   "languages": [
     {
       "lang": "en",
