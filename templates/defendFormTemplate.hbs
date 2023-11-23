@@ -239,7 +239,7 @@
 
             <!-- Override Current Attribute -->
             <section class="add-entry-row add-modifier-panel">
-                <input type="text" class="add-modifier-name" placeholder="New Modifiers Name">
+                <input type="text" id="df-mod-override-descrip-text-input" class="add-modifier-name" placeholder="New Modifiers Name">
                 <select class="add-modifier-type" id="df-mod-override-bonus-type-dropdown">
                     <option value="6">Untyped</option>
                     <option value="5" selected="">Circumstance</option>
@@ -249,15 +249,15 @@
                     <option value="1">Proficiency</option>
                     <option value="0">Attribute</option>
                 </select>
-                <input type="number" class="add-modifier-value" placeholder="+1">
-                <button type="button" class="add-modifier">+Add</button>
+                <input type="number" id="df-mod-override-value-num-input" class="add-modifier-value" placeholder="+1">
+                <button type="button" id="df-mod-override-confirm-button" class="add-modifier">+Add</button>
             </section>
             <hr>
 
             <!-- Input Field for Tagets Attack DC -->
             <div class="dialog-row">
                 <span class="mod">Targets Attack DC (Attack Bonus +10):</span>
-                <span class="defense-target-dc-title"> <input type="number" class="value" placeholder=""> </span>
+                <span class="defense-target-dc-title"> <input id="df-mod-defence-check-dc-input" type="number" class="value" placeholder=""> </span>
             </div>
 
             <!-- Adjust Roll Type -->
@@ -273,7 +273,7 @@
             <hr>
 
             <!-- Roll Defense Check Button -->
-            <button type="button" class="roll">Roll ({{{defend_form_getBonusTotal totalAttackBonus}}})</button>
+            <button type="button" class="roll">Roll ({{{defend_form_getBonusTotal totalDefendBonus}}})</button>
         </form>
     </section>
 </div>
