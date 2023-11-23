@@ -23,28 +23,43 @@ class CustomBonusClass {
 
 // Class that holds 2 modifers. Hold the base and the override value
 class CustomPlayerBonus {
-    BonusType=0;
-    DefaultBonus =  {};
-    OverrideBonus =  {};
+    BonusType=          0;
+    BonusTypeSigned=   0;
+    isPos =             true;
+    DefaultBonus =      {};
+    OverrideBonus =     {};
     isBonusOverridden = false;
+    isBonusApplied =    false;
     constructor(signedBonusTypeEnum){
-        this.BonusType = signedBonusTypeEnum;
-        this.DefaultBonus = new CustomBonusClass(signedBonusTypeEnum);
-        this.OverrideBonus = new CustomBonusClass(signedBonusTypeEnum);
-    }
-
-    getBonusValue(){
-        return this.signedBonusTypeEnum;
-    }
-
-    getBonusType(){
-        //Bonus type should be the same between both subclasses
-        if(this.isBonusOverridden)
-        {
-            return this.DefaultBonus.BonusType;
+        this.BonusTypeSigned   = signedBonusTypeEnum;
+        this.DefaultBonus       = new CustomBonusClass(signedBonusTypeEnum);
+        this.OverrideBonus      = new CustomBonusClass(signedBonusTypeEnum);
+        if(signedBonusTypeEnum >= DEFFEND_CHECK_GLOBALS.NUM_BONUS_TYPES){
+            this.isPos      = false;
+            this.BonusType  = signedBonusTypeEnum-DEFFEND_CHECK_GLOBALS.NUM_BONUS_TYPES;
         }else{
-            return this.OverrideBonus.BonusType;
+            this.isPos      = true;
+            this.BonusType  = signedBonusTypeEnum;
         }
+    }
+
+    /* Get the current value bing used */
+    getBonusValue(){
+        if(this.isBonusOverridden){
+            return this.OverrideBonus.BonusValue;
+        }else{
+            return this.DefaultBonus.BonusValue;
+        }
+    }
+
+    /* Return Mod TYPE enum [CIR, STATUS, UNTYPED, ....] */
+    getBonusType(){
+        return this.BonusType;
+    }
+
+    /* Return Signed Mod Type enum [POS_CIR, NEG_CIR, POS_UNTYPES....] */
+    getSignedBonusType(){
+        return this.BonusTypeSigned
     }
 }
 
@@ -99,7 +114,12 @@ class DefendCheckForm extends FormApplication {
             return;
         }
 
+        /* Reset isApplied to false */
         DefendCheckForm.formData.isBonusApplied_Ary.fill(false);
+        for(let i=0; i<DEFFEND_CHECK_GLOBALS.NUM_BONUS_TYPES_SIGNED; i++){
+            DefendCheckForm.formData.playerBonuses_Ary[i].isBonusApplied = false;
+        }
+
         for(let it of character.attributes.ac.modifiers)
         {
             if( it.enabled )
@@ -168,8 +188,9 @@ class DefendCheckForm extends FormApplication {
                         break;
                 } //End Bonus Tyoe Switch Case
 
-                //We found an active bonus
+                //We found an active bonus, update isBonusApplied
                 DefendCheckForm.formData.isBonusApplied_Ary[newBonus.BonusTypeSigned] = true;
+                DefendCheckForm.formData.playerBonuses_Ary[newBonus.BonusTypeSigned].isBonusApplied = true
 
                 //Update Currently stored bonus if new value for associated bonus type are larger than currently saved value
                 let currentVal = DefendCheckForm.formData.playerBonuses_Ary[newBonus.BonusTypeSigned].DefaultBonus.BonusValue;
@@ -200,10 +221,10 @@ class DefendCheckForm extends FormApplication {
 
         for (let i=0; i<DEFFEND_CHECK_GLOBALS.NUM_BONUS_TYPES_SIGNED; i++)
         {
-            if(DefendCheckForm.formData.isBonusApplied_Ary[i]){
+            if(DefendCheckForm.formData.playerBonuses_Ary[i].isBonusApplied){
 
                 let tempBonusValue = DefendCheckForm.formData.playerBonuses_Ary[i].getBonusValue();
-                let tempBonusType = DefendCheckForm.formData.playerBonuses_Ary[i].getBonusType();
+                let tempBonusType = DefendCheckForm.formData.playerBonuses_Ary[i].getSignedBonusType();
 
                 switch(tempBonusType){
                     case DEFFEND_CHECK_GLOBALS.BONUS_TYPES_SIGNED.ATTRIBUTE_POS:
@@ -238,6 +259,7 @@ class DefendCheckForm extends FormApplication {
             }
         }
 
+        /* Calc total bonus */
         let calcDefendBonus = tempAtt+tempProf+tempPoten+tempItem+tempStatus+tempCirc+tempUntyped;
 
         DefendCheckForm.formData.totalDefendBonus = calcDefendBonus;
