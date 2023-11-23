@@ -15,8 +15,7 @@
     "scripts/classes/globals.js",
     "scripts/classes/handlebars-helpers.js",
     "scripts/classes/hooks.js",
-    "scripts/classes/test_deffendFormClass.js",
-    "scripts/classes/test_deffendFormTemplate.hbs"
+    "scripts/classes/pf2e-defense-check-main.js"
   ],
   "styles": [
     "styles/pf2e-defense-check.css"
