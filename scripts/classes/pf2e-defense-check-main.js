@@ -326,7 +326,7 @@ class DefendCheckForm extends FormApplication {
 
     //update the signedBonusType value for overrideInputValues object
     static _updateSignedBonusType(){
-        let curBaseBonusType = DefendCheckForm.formData.overrideInputValues.bonusValue;
+        let curBaseBonusType = DefendCheckForm.formData.overrideInputValues.bonusType;
         let curIsPos = DefendCheckForm.formData.overrideInputValues.isPos;
         DefendCheckForm.formData.overrideInputValues.bonusTypeSigned = 
             DEFFEND_CHECK_GLOBALS.get_signed_bonus_type(curBaseBonusType,curIsPos);
@@ -367,7 +367,7 @@ class DefendCheckForm extends FormApplication {
     async _handleNewOverrideBonusTypeDropdown(event){
         const newBonusType = event.target.value;
         DefendCheckForm.formData.overrideInputValues.bonusType = newBonusType;
-        this._updateSignedBonusType();
+        DefendCheckForm._updateSignedBonusType();
     }
 
     //Handle number value bing input into the override bonus type boxes
@@ -380,7 +380,7 @@ class DefendCheckForm extends FormApplication {
         }else{
             DefendCheckForm.formData.overrideInputValues.isPos = false;
         }
-        this._updateSignedBonusType();
+        DefendCheckForm._updateSignedBonusType();
     }
 
     //Handle *Add* button to add new override value
@@ -390,9 +390,9 @@ class DefendCheckForm extends FormApplication {
 
         //--- Save New bonus to data model ---
         //Get stored override objects & objects to update
-        let signedModifier = DefendCheckForm.overrideObj.bonusTypeSigned;
-        let plyrBonusData = DefendCheckForm.formData.playerBonuses_Ary[signedModifier];
         let toOverrideObj = DefendCheckForm.formData.overrideInputValues;
+        let signedModifier = toOverrideObj.bonusTypeSigned;
+        let plyrBonusData = DefendCheckForm.formData.playerBonuses_Ary[signedModifier];
         
         //Update player bonus data
         plyrBonusData.isBonusOverridden = true;
@@ -402,6 +402,9 @@ class DefendCheckForm extends FormApplication {
         plyrBonusData.OverrideBonus.BonusName = toOverrideObj.bonusName;
         plyrBonusData.OverrideBonus.BonusValue = toOverrideObj.bonusValue;
         plyrBonusData.OverrideBonus.isPos = !toOverrideObj.isNeg;
+
+        //Update isBonusApplied_Ary incase we added an initally unused bonus
+        DefendCheckForm.formData.isBonusApplied_Ary[signedModifier] = true;
 
         //Reset currently saved data in override data store
         toOverrideObj.bonusName = "";
