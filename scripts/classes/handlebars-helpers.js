@@ -36,7 +36,7 @@ Handlebars.registerHelper('defend_form_IsChecked', function (bool, options) {
 
 //Handlebars helper used to display check on or off on the checkboxes
 Handlebars.registerHelper('defend_form_getBonusTotal', function (value, options) {
-    if(value > 0){
+    if(parseInt(value) > 0){
         return '+'+String(value);
     }else
     return String(value);

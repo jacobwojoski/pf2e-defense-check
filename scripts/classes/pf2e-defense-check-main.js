@@ -324,6 +324,7 @@ class DefendCheckForm extends FormApplication {
     // ========= OVERRIDE INPUT STUFF ===============
     // ==============================================
 
+    //update the signedBonusType value for overrideInputValues object
     static _updateSignedBonusType(){
         let curBaseBonusType = DefendCheckForm.formData.overrideInputValues.bonusValue;
         let curIsPos = DefendCheckForm.formData.overrideInputValues.isPos;
@@ -332,7 +333,6 @@ class DefendCheckForm extends FormApplication {
     }
 
     //Handle any selections on any of the override checkbox's
-    /* TODO */
     async _handleOverrideCheckbox(event){
         let plyrData = DefendCheckForm.formData;
         let modifierType = event.id.value;
