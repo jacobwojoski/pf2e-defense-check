@@ -28,7 +28,7 @@
                 <div class="dialog-row">
                     <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[0]}}}</span>
                     <span class="type"><span class="tag">Attribute</span></span>
-                    <span class="value">+{{{defend_form_get_bonus_value playerBonuses_Ary.[0]}}}</span>
+                    <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[0]}}}</span>
                     <div class="exclude">
                         <label class="toggle">
                             <input type="checkbox" id="df-mod-use-override-checkbox" value="0" data-modifier-index="0" {{{defend_form_IsChecked playerBonuses_Ary.[0].isBonusOverridden}}}>
@@ -58,7 +58,7 @@
                 <div class="dialog-row">
                     <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[1]}}}</span>
                     <span class="type"><span class="tag">Proficiency</span></span>
-                    <span class="value">+{{{defend_form_get_bonus_value playerBonuses_Ary.[1]}}}</span>
+                    <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[1]}}}</span>
 
                     <div class="exclude">
                         <label class="toggle">
@@ -89,7 +89,7 @@
                 <div class="dialog-row">
                     <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[2]}}}</span>
                     <span class="type"><span class="tag">Potency</span></span>
-                    <span class="value">+{{{defend_form_get_bonus_value playerBonuses_Ary.[2]}}}</span>
+                    <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[2]}}}</span>
                     <div class="exclude">
                         <label class="toggle">
                             <input type="checkbox" id="df-mod-use-override-checkbox" value="2" data-modifier-index="2" {{{defend_form_IsChecked playerBonuses_Ary.[2].isBonusOverridden}}}>
@@ -119,7 +119,7 @@
                 <div class="dialog-row">
                     <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[3]}}}</span>
                     <span class="type"><span class="tag">Item</span></span>
-                    <span class="value">+{{{defend_form_get_bonus_value playerBonuses_Ary.[3]}}}</span>
+                    <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[3]}}}</span>
                     <div class="exclude">
                         <label class="toggle">
                             <input type="checkbox" id="df-mod-use-override-checkbox" value="3" data-modifier-index="3" {{{defend_form_IsChecked playerBonuses_Ary.[3].isBonusOverridden}}}>
@@ -149,7 +149,7 @@
                 <div class="dialog-row">
                     <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[4]}}}</span>
                     <span class="type"><span class="tag">Stats</span></span>
-                    <span class="value">+{{{defend_form_get_bonus_value playerBonuses_Ary.[4]}}}</span>
+                    <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[4]}}}</span>
                     <div class="exclude">
                         <label class="toggle">
                             <input type="checkbox" id="df-mod-use-override-checkbox" value="4" data-modifier-index="4" {{{defend_form_IsChecked playerBonuses_Ary.[4].isBonusOverridden}}}>
@@ -179,7 +179,7 @@
                 <div class="dialog-row">
                     <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[5]}}}</span>
                     <span class="type"><span class="tag">Circumstance</span></span>
-                    <span class="value">+{{{defend_form_get_bonus_value playerBonuses_Ary.[5]}}}</span>
+                    <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[5]}}}</span>
                     <div class="exclude">
                         <label class="toggle">
                             <input type="checkbox" id="df-mod-use-override-checkbox" value="5" data-modifier-index="5" {{{defend_form_IsChecked playerBonuses_Ary.[5].isBonusOverridden}}}>
@@ -209,7 +209,7 @@
                 <div class="dialog-row">
                     <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[6]}}}</span>
                     <span class="type"><span class="tag">Untyped</span></span>
-                    <span class="value">+{{{defend_form_get_bonus_value playerBonuses_Ary.[6]}}}</span>
+                    <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[6]}}}</span>
                     <div class="exclude">
                         <label class="toggle">
                             <input type="checkbox" id="df-mod-use-override-checkbox" value="6" data-modifier-index="6" {{{defend_form_IsChecked playerBonuses_Ary.[6].isBonusOverridden}}}>
@@ -278,99 +278,3 @@
         </form>
     </section>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 
-<div class="modifier-container">
-    <div class="dialog-row">
-        <span class="mod">Dexterity</span>
-        <span class="type">
-            <span class="tag">Attribute</span>
-        </span>
-        <span class="value">+4</span>
-        <div class="exclude">
-            <label class="toggle">
-                <input type="checkbox" data-modifier-index="0" checked="">
-                <span class="widget"></span>
-            </label>
-        </div>
-    </div>
-    <div class="dialog-row">
-        <span class="mod">Trained</span>
-        <span class="type">
-            <span class="tag">Proficiency</span>
-        </span>
-        <span class="value">+4</span>
-        <div class="exclude">
-            <label class="toggle">
-                <input type="checkbox" data-modifier-index="1" checked="">
-                <span class="widget"></span>
-            </label>
-        </div>
-    </div>
-    <div class="dialog-row">
-        <span class="mod">Deffending Bonus</span>
-        <span class="type">
-            <span class="tag">Item</span>
-        </span>
-        <span class="value">+1</span>
-        <div class="exclude">
-            <label class="toggle">
-                <input type="checkbox" data-modifier-index="2" checked="">
-                <span class="widget"></span>
-            </label>
-        </div>
-    </div>
-    <div class="dialog-row">
-        <span class="mod">Status Bonus</span>
-        <span class="type">
-            <span class="tag">Status</span>
-        </span>
-        <span class="value">+1</span>
-        <div class="exclude">
-            <label class="toggle">
-                <input type="checkbox" data-modifier-index="3" checked="">
-                <span class="widget"></span>
-            </label>
-        </div>
-    </div>
-    <div class="dialog-row">
-        <span class="mod">Circumstance Bonus</span>
-        <span class="type">
-            <span class="tag">Circumstance</span>
-        </span>
-        <span class="value">+1</span>
-        <div class="exclude">
-            <label class="toggle">
-                <input type="checkbox" data-modifier-index="4" checked="">
-                <span class="widget"></span>
-            </label>
-        </div>
-    </div>
-    <div class="dialog-row">
-        <span class="mod">Untyped Bonus</span>
-        <span class="type">
-            <span class="tag">Untyped</span>
-        </span>
-        <span class="value">+1</span>
-        <div class="exclude">
-            <label class="toggle">
-                <input type="checkbox" data-modifier-index="5" checked="">
-                <span class="widget"></span>
-            </label>
-        </div>
-    </div>
-</div>
--->
