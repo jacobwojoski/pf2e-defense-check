@@ -336,16 +336,18 @@ class DefendCheckForm extends FormApplication {
     async _handleOverrideCheckbox(event){
         let plyrData = DefendCheckForm.formData;
         let modifierType = event.id.value;
-
         let plyrBonusData = plyrData.playerBonuses_Ary[modifierType];
-        
-        //Check if there is an override Value
-        if(plyrBonusData.OverrideBonus.BonusValue != 0){
+        let curIsOverwridden = plyrBonusData.isBonusOverridden;
+
+        //Verify turning on override
+        if(curIsOverwridden == false && plyrBonusData.OverrideBonus.BonusValue != 0){
             //Set Use override to ON
             plyrBonusData.isBonusOverridden = true;
-
+        }else if(curIsOverwridden == true){
+            //turn off override
+            plyrBonusData.isBonusOverridden = false;
         }else{
-            //Display Warning if NO OVERRIDE
+            //Display Warning if trying to enable an override with no data
             let warnString = "No Override Value saved";
             ui.notifications.warn(warnString);
         }
@@ -388,8 +390,8 @@ class DefendCheckForm extends FormApplication {
 
         //--- Save New bonus to data model ---
         //Get stored override objects & objects to update
-        let modifierType = DefendCheckForm.overrideObj.bonusTypeSigned;
-        let plyrBonusData = DefendCheckForm.formData.playerBonuses_Ary[modifierType];
+        let signedModifier = DefendCheckForm.overrideObj.bonusTypeSigned;
+        let plyrBonusData = DefendCheckForm.formData.playerBonuses_Ary[signedModifier];
         let toOverrideObj = DefendCheckForm.formData.overrideInputValues;
         
         //Update player bonus data
