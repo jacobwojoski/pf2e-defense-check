@@ -324,7 +324,7 @@ class DefendCheckForm extends FormApplication {
     // ========= OVERRIDE INPUT STUFF ===============
     // ==============================================
 
-    _updateSignedBonusType(){
+    static _updateSignedBonusType(){
         let curBaseBonusType = DefendCheckForm.formData.overrideInputValues.bonusValue;
         let curIsPos = DefendCheckForm.formData.overrideInputValues.isPos;
         DefendCheckForm.formData.overrideInputValues.bonusTypeSigned = 
@@ -434,7 +434,7 @@ class DefendCheckForm extends FormApplication {
         html.on('click', "#df-mod-use-override-checkbox", this._handleOverrideCheckbox);//Override Checkbox (Use override value)
 
         html.on('input', "#df-mod-override-descrip-text-input", this._handleNewOverrideBonusTypeText);    //Input Text (Name of bonus)
-        html.on('select', "#df-mod-override-bonus-type-dropdown", this._handleNewOverrideBonusTypeDropdown);  //Selection input (Drop down)
+        html.on('change', "#df-mod-override-bonus-type-dropdown", this._handleNewOverrideBonusTypeDropdown);  //Selection input (Drop down)
         html.on('input', "#df-mod-override-value-num-input", this._handleNewOverrideBonusTypeValueInput);  //Input number (Bonus number)
         html.on('click', "#df-mod-override-confirm-button", this._handleNewOverrideBonusTypeConfirmButton);  //Add value (Confirmation input)
 
