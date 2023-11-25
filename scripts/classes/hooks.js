@@ -3,7 +3,7 @@
 /* ==================================================== */
 
 Hooks.once('init', () => {
-    DEFFENDER_FORM_OBJ = new DefendCheckForm();
+    //DEFFENDER_FORM_OBJ = new DefendCheckForm();
 })
 
 Hooks.on('renderActorSheet', (app, html, options) => {

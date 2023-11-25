@@ -26,3 +26,7 @@
     width: 50%;
     align-items: right;
 }
+
+.my-confrm-btn-class {
+    padding-top: 1px;
+}
