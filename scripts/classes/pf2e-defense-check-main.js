@@ -384,23 +384,30 @@ class DefendCheckForm extends FormApplication {
     //Handle *Add* button to add new override value
     async _handleNewOverrideBonusTypeConfirmButton(event){
         //Confirm New override if replacing an existing Override value
-        //Save New bonus to data model
-        let plyrData = DefendCheckForm.formData;
-        let modifierType = event.id.value;
-        let plyrBonusData = plyrData.playerBonuses_Ary[modifierType];
+            //TODO
+
+        //--- Save New bonus to data model ---
+        //Get stored override objects & objects to update
+        let modifierType = DefendCheckForm.overrideObj.bonusTypeSigned;
+        let plyrBonusData = DefendCheckForm.formData.playerBonuses_Ary[modifierType];
+        let toOverrideObj = DefendCheckForm.formData.overrideInputValues;
         
-        let overrideObj = DefendCheckForm.formData.overrideInputValues;
-        plyrBonusData.BonusName = overrideObj.bonusName;
-        plyrBonusData.BonusValue = overrideObj.bonusValue;
-        plyrBonusData.isPos = !overrideObj.isNeg;
+        //Update player bonus data
+        plyrBonusData.isBonusOverridden = true;
+        plyrBonusData.isPos = toOverrideObj.isPos;
+
+        //update override object
+        plyrBonusData.OverrideBonus.BonusName = toOverrideObj.bonusName;
+        plyrBonusData.OverrideBonus.BonusValue = toOverrideObj.bonusValue;
+        plyrBonusData.OverrideBonus.isPos = !toOverrideObj.isNeg;
 
         //Reset currently saved data in override data store
-        overrideObj.bonusName = "";
-        overrideObj.bonusValue = 5;
-        overrideObj.bonusTypeSigned = 5;
-        overrideObj.isPos = true;
+        toOverrideObj.bonusName = "";
+        toOverrideObj.bonusValue = 5;
+        toOverrideObj.bonusTypeSigned = 5;
+        toOverrideObj.isPos = true;
 
-        //Rerender
+        //Rerender to display override
         DEFFENDER_FORM_OBJ.render(true);
     }
 
@@ -432,13 +439,13 @@ class DefendCheckForm extends FormApplication {
         super.activateListeners(html);
 
         //Checkbox on selections
-        html.on('click', "#df-mod-use-override-checkbox", this._handleOverrideCheckbox);//Override Checkbox (Use override value)
+        html.on('click', "#df-mod-use-override-checkbox", this._handleOverrideCheckbox);    //Override Checkbox (Use override value)
     
         //override inputs
-        html.on('input', "#df-mod-override-descrip-text-input", this._handleNewOverrideBonusTypeText);    //Input Text (Name of bonus)
-        html.on('change', "#df-mod-override-bonus-type-dropdown", this._handleNewOverrideBonusTypeDropdown);  //Selection input (Drop down)
-        html.on('input', "#df-mod-override-value-num-input", this._handleNewOverrideBonusTypeValueInput);  //Input number (Bonus number)
-        html.on('click', "#df-mod-override-confirm-button", this._handleNewOverrideBonusTypeConfirmButton);  //Add value (Confirmation input)
+        html.on('input',    "#df-mod-override-descrip-text-input",  this._handleNewOverrideBonusTypeText);          //Input Text (Name of bonus)
+        html.on('change',   "#df-mod-override-bonus-type-dropdown", this._handleNewOverrideBonusTypeDropdown);      //Selection input (Drop down)
+        html.on('input',    "#df-mod-override-value-num-input",     this._handleNewOverrideBonusTypeValueInput);    //Input number (New Bonus Value)
+        html.on('click',    "#df-mod-override-confirm-button",      this._handleNewOverrideBonusTypeConfirmButton); //Add value (Confirmation input)
 
         //Attack DC inputs
         html.on('input', "#df-mod-defence-check-dc-input", this._handleDefenceCheckDCInput);
