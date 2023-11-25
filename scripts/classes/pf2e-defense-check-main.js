@@ -453,7 +453,7 @@ class DefendCheckForm extends FormApplication {
         super.activateListeners(html);
 
         //Checkbox on selections
-        html.on('click', "#df-mod-use-override-checkbox", this._handleOverrideCheckbox);    //Override Checkbox (Use override value)
+        html.on('click',    "#df-mod-use-override-checkbox", this._handleOverrideCheckbox);    //Override Checkbox (Use override value)
     
         //override inputs
         html.on('input',    "#df-mod-override-descrip-text-input",  this._handleNewOverrideBonusTypeText);          //Input Text (Name of bonus)
