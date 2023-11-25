@@ -74,7 +74,8 @@ class DefendCheckForm extends FormApplication {
         targetsAttackDC:    0,        /* INT */
         overrideInputValues: {
             bonusName:  "", /* STRING */
-            bonusType:  0,  /* BONUS_TYPES */
+            bonusType:  5,  /* BONUS_TYPES (DEFAULT: CIRCUMSTANCE)*/
+            bonusTypeSigned: 5, /* BONUS_TYPES_SIGNED (DEFAULT: CIRCUMSTANCE_POS) */
             bonusValue: 0,  /* INT */
             isNeg: false,   /* BOOL */
         },
@@ -323,7 +324,15 @@ class DefendCheckForm extends FormApplication {
     // ========= OVERRIDE INPUT STUFF ===============
     // ==============================================
 
+    _updateSignedBonusType(){
+        let curBaseBonusType = DefendCheckForm.formData.overrideInputValues.bonusValue;
+        let curIsPos = DefendCheckForm.formData.overrideInputValues.isPos;
+        DefendCheckForm.formData.overrideInputValues.bonusTypeSigned = 
+            DEFFEND_CHECK_GLOBALS.get_signed_bonus_type(curBaseBonusType,curIsPos);
+    }
+
     //Handle any selections on any of the override checkbox's
+    /* TODO */
     async _handleOverrideCheckbox(event){
         let plyrData = DefendCheckForm.formData;
         let modifierType = event.id.value;
@@ -356,18 +365,20 @@ class DefendCheckForm extends FormApplication {
     async _handleNewOverrideBonusTypeDropdown(event){
         const newBonusType = event.target.value;
         DefendCheckForm.formData.overrideInputValues.bonusType = newBonusType;
+        this._updateSignedBonusType();
     }
 
     //Handle number value bing input into the override bonus type boxes
     async _handleNewOverrideBonusTypeValueInput(event){
         //Save value to Data Model. Dont Change data model.
-        const newBonusType = event.target.value;
-        DefendCheckForm.formData.overrideInputValues.bonusValue = newBonusType;
-        if(newBonusType<0){
-            DefendCheckForm.formData.overrideInputValues.isNeg = true;
+        const newBonusValue = parseInt(event.target.value);
+        DefendCheckForm.formData.overrideInputValues.bonusValue = newBonusValue;
+        if(newBonusValue >= 0){
+            DefendCheckForm.formData.overrideInputValues.isPos = true;
         }else{
-            DefendCheckForm.formData.overrideInputValues.isNeg = false;
+            DefendCheckForm.formData.overrideInputValues.isPos = false;
         }
+        this._updateSignedBonusType();
     }
 
     //Handle *Add* button to add new override value
@@ -385,8 +396,9 @@ class DefendCheckForm extends FormApplication {
 
         //Reset currently saved data in override data store
         overrideObj.bonusName = "";
-        overrideObj.bonusValue = 0;
-        overrideObj.isNeg = false;
+        overrideObj.bonusValue = 5;
+        overrideObj.bonusTypeSigned = 5;
+        overrideObj.isPos = true;
 
         //Rerender
         DEFFENDER_FORM_OBJ.render(true);
@@ -419,7 +431,7 @@ class DefendCheckForm extends FormApplication {
     activateListeners(html) {
         super.activateListeners(html);
 
-        html.on('click', "df-mod-use-override-checkbox", this._handleButtonClick);//Override Checkbox (Use override value)
+        html.on('click', "#df-mod-use-override-checkbox", this._handleOverrideCheckbox);//Override Checkbox (Use override value)
 
         html.on('input', "#df-mod-override-descrip-text-input", this._handleNewOverrideBonusTypeText);    //Input Text (Name of bonus)
         html.on('select', "#df-mod-override-bonus-type-dropdown", this._handleNewOverrideBonusTypeDropdown);  //Selection input (Drop down)

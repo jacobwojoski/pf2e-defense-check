@@ -40,4 +40,14 @@ class DEFFEND_CHECK_GLOBALS {
 
     static BONUS_TYPE_TO_NAMES = ["Attribute","Proficency","Potency","Item","Status","Circumstance","Untyped"];
     static BONUS_TYPE_SIGNED_TO_NAMES = ["Attribute","Attribute","Proficency","Proficency","Potency","Potency","Item","Item","Status","Status","Circumstance","Circumstance","Untyped","Untyped"];
+
+    /* Convert BONUS_TYPES to BONUS_TYPES_SIGNED */
+    static get_signed_bonus_type(baseBonusType, isPos=true)
+    {
+        if(isPos){
+            return baseBonusType;
+        }else{
+            return baseBonusType+this.NUM_BONUS_TYPES;
+        }
+    }
 }
