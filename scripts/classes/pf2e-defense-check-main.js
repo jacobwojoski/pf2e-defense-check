@@ -425,11 +425,20 @@ class DefendCheckForm extends FormApplication {
     // ================== ROLL SELECTIONS ===============
     // ==================================================
     async _handleRollTypedropdown(Event){
-        
+        //Handle selections of blind roll, gm roll, self roll, public roll
+            //TODO
     }
 
-    async _handleRollButton(){
-        //ASK GM FOR CHECK VALUE SOMEHOW?
+    async _handleRollButton(event){
+        //ASK GM for check value?
+            //TODO
+                //set bool notRec
+                //Socket -> request GM VALUE
+                //GM update value
+                //GM Socket -> back
+                // update bool Var Rec
+                // get var from flag
+                // use var for DC
 
         //create and display message
         this.createRollMessage();
