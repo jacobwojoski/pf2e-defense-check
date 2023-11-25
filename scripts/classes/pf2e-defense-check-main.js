@@ -24,12 +24,13 @@ class CustomBonusClass {
 // Class that holds 2 modifers. Hold the base and the override value
 class CustomPlayerBonus {
     BonusType=          0;
-    BonusTypeSigned=   0;
+    BonusTypeSigned=    0;
     isPos =             true;
     DefaultBonus =      {};
     OverrideBonus =     {};
     isBonusOverridden = false;
     isBonusApplied =    false;
+
     constructor(signedBonusTypeEnum){
         this.BonusTypeSigned   = signedBonusTypeEnum;
         this.DefaultBonus       = new CustomBonusClass(signedBonusTypeEnum);
@@ -91,7 +92,6 @@ class DefendCheckForm extends FormApplication {
             DefendCheckForm.formData.playerBonuses_Ary[i] = new CustomPlayerBonus(i);
             DefendCheckForm.formData.isBonusApplied_Ary[i] = false;
         }
-        
     }
 
     static get defaultOptions(){
@@ -121,6 +121,7 @@ class DefendCheckForm extends FormApplication {
             DefendCheckForm.formData.playerBonuses_Ary[i].isBonusApplied = false;
         }
 
+        /* loop through all currently applied modifiers to the players AC and save them */
         for(let it of character.attributes.ac.modifiers)
         {
             if( it.enabled )
@@ -275,21 +276,24 @@ class DefendCheckForm extends FormApplication {
     }
 
     createRollMessage(){
+        // This is untested and un verifed,
+        // Want to make roll data that shows how much the player hit or missed by
+            // TODO
         const customCSS = `
-        .custom-hit-by {
-            background-color: #ffcc00;
-            border: 2px solid #ff9900;
-            padding: 10px;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-        .custom-miss {
-            background-color: #ffcc00;
-            border: 2px solid #ff9900;
-            padding: 10px;
-            border-radius: 5px;
-            font-weight: bold;
-        }
+            .custom-hit-by {
+                background-color: #ffcc00;
+                border: 2px solid #ff9900;
+                padding: 10px;
+                border-radius: 5px;
+                font-weight: bold;
+            }
+            .custom-miss {
+                background-color: #ffcc00;
+                border: 2px solid #ff9900;
+                padding: 10px;
+                border-radius: 5px;
+                font-weight: bold;
+            }
         `;
 
         // Inject the custom CSS into the document head
@@ -353,7 +357,7 @@ class DefendCheckForm extends FormApplication {
         }
 
         //Refresh Screen to display new info
-        DEFFENDER_FORM_OBJ.render(true);
+        //DEFFENDER_FORM_OBJ.render();
     }
 
     //Handle Text input for Override Bonus Text Field
@@ -413,7 +417,7 @@ class DefendCheckForm extends FormApplication {
         toOverrideObj.isPos = true;
 
         //Rerender to display override
-        DEFFENDER_FORM_OBJ.render(true);
+        this.render();
     }
 
     // ============ END OVERRIDE INPUTS =================
@@ -453,16 +457,16 @@ class DefendCheckForm extends FormApplication {
         super.activateListeners(html);
 
         //Checkbox on selections
-        html.on('click',    "#df-mod-use-override-checkbox", this._handleOverrideCheckbox);    //Override Checkbox (Use override value)
+        html.on('click',    "#df-mod-use-override-checkbox", this._handleOverrideCheckbox.bind(this));    //Override Checkbox (Use override value)
     
         //override inputs "#df-mod-override-descrip-text-input"
-        html.on('input',    "#df-mod-override-descrip-text-input",  this._handleNewOverrideBonusTypeText);          //Input Text (Name of bonus)
-        html.on('change',   "#df-mod-override-bonus-type-dropdown", this._handleNewOverrideBonusTypeDropdown);      //Selection input (Drop down)
-        html.on('input',    "#df-mod-override-value-num-input",     this._handleNewOverrideBonusTypeValueInput);    //Input number (New Bonus Value)
-        html.on('click',    "#df-mod-override-confirm-button",      this._handleNewOverrideBonusTypeConfirmButton); //Add value (Confirmation input)
+        html.on('input',    "#df-mod-override-descrip-text-input",  this._handleNewOverrideBonusTypeText.bind(this));          //Input Text (Name of bonus)
+        html.on('change',   "#df-mod-override-bonus-type-dropdown", this._handleNewOverrideBonusTypeDropdown.bind(this));      //Selection input (Drop down)
+        html.on('input',    "#df-mod-override-value-num-input",     this._handleNewOverrideBonusTypeValueInput.bind(this));    //Input number (New Bonus Value)
+        html.on('click',    "#df-mod-override-confirm-button",      this._handleNewOverrideBonusTypeConfirmButton.bind(this)); //Add value (Confirmation input)
 
         //Attack DC inputs
-        html.on('input',    "#df-mod-defence-check-dc-input", this._handleDefenceCheckDCInput);
+        html.on('input',    "#df-mod-defence-check-dc-input", this._handleDefenceCheckDCInput.bind(this));
     }
 
     /*
