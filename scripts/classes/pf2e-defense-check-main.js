@@ -358,6 +358,7 @@ class DefendCheckForm extends FormApplication {
 
         //Refresh Screen to display new info
         DEFFENDER_FORM_OBJ.render();
+        DEFFENDER_FORM_OBJ.activateListeners(this.element);
     }
 
     //Handle Text input for Override Bonus Text Field
@@ -418,6 +419,7 @@ class DefendCheckForm extends FormApplication {
 
         //Rerender to display override
         DEFFENDER_FORM_OBJ.render();
+        DEFFENDER_FORM_OBJ.activateListeners(this.element);
     }
 
     // ============ END OVERRIDE INPUTS =================
