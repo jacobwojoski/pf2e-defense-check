@@ -68,7 +68,7 @@ class CustomPlayerBonus {
 // and display all the info
 
 class DefendCheckForm extends FormApplication {
-    static formData = {
+    formData = {
         actorID: "",                  /* STRING */
         playerBonuses_Ary:  [14],     /* [CustomPlayerBonus] */
         isBonusApplied_Ary: [14],     /* [Boolian] */
@@ -86,11 +86,11 @@ class DefendCheckForm extends FormApplication {
 
     constructor(passedInActorID){
         super();
-        DefendCheckForm.formData.actorID = passedInActorID;
+        this.formData.actorID = passedInActorID;
 
         for(let i=0; i<DEFFEND_CHECK_GLOBALS.NUM_BONUS_TYPES_SIGNED; i++){
-            DefendCheckForm.formData.playerBonuses_Ary[i] = new CustomPlayerBonus(i);
-            DefendCheckForm.formData.isBonusApplied_Ary[i] = false;
+            this.formData.playerBonuses_Ary[i] = new CustomPlayerBonus(i);
+            this.formData.isBonusApplied_Ary[i] = false;
         }
     }
 
@@ -109,16 +109,16 @@ class DefendCheckForm extends FormApplication {
      * - update the defaultPlayerBonus with those modifiers
      * @returns void
      */
-    static parsePlayerData(){
-        const character = game.actors.get(DefendCheckForm.formData.actorID);
+    parsePlayerData(){
+        const character = game.actors.get(this.formData.actorID);
         if(!character) {
             return;
         }
 
         /* Reset isApplied to false */
-        DefendCheckForm.formData.isBonusApplied_Ary.fill(false);
+        this.formData.isBonusApplied_Ary.fill(false);
         for(let i=0; i<DEFFEND_CHECK_GLOBALS.NUM_BONUS_TYPES_SIGNED; i++){
-            DefendCheckForm.formData.playerBonuses_Ary[i].isBonusApplied = false;
+            this.formData.playerBonuses_Ary[i].isBonusApplied = false;
         }
 
         /* loop through all currently applied modifiers to the players AC and save them */
@@ -191,28 +191,28 @@ class DefendCheckForm extends FormApplication {
                 } //End Bonus Tyoe Switch Case
 
                 //We found an active bonus, update isBonusApplied
-                DefendCheckForm.formData.isBonusApplied_Ary[newBonus.BonusTypeSigned] = true;
-                DefendCheckForm.formData.playerBonuses_Ary[newBonus.BonusTypeSigned].isBonusApplied = true
+                this.formData.isBonusApplied_Ary[newBonus.BonusTypeSigned] = true;
+                this.formData.playerBonuses_Ary[newBonus.BonusTypeSigned].isBonusApplied = true
 
                 //Update Currently stored bonus if new value for associated bonus type are larger than currently saved value
-                let currentVal = DefendCheckForm.formData.playerBonuses_Ary[newBonus.BonusTypeSigned].DefaultBonus.BonusValue;
+                let currentVal = this.formData.playerBonuses_Ary[newBonus.BonusTypeSigned].DefaultBonus.BonusValue;
                 if(newBonus.isPos && newBonus.BonusValue > currentVal){
                     //If new pos value is > current pos value
                     //Object.assign(DefendCheckForm.formData.playerBonuses_Ary[newBonus.BonusTypeSigned].DefaultBonus, newBonus);
-                    DefendCheckForm.formData.playerBonuses_Ary[newBonus.BonusTypeSigned].DefaultBonus.BonusValue = newBonus.BonusValue;
-                    DefendCheckForm.formData.playerBonuses_Ary[newBonus.BonusTypeSigned].DefaultBonus.BonusName = newBonus.BonusName;
+                    this.formData.playerBonuses_Ary[newBonus.BonusTypeSigned].DefaultBonus.BonusValue = newBonus.BonusValue;
+                    this.formData.playerBonuses_Ary[newBonus.BonusTypeSigned].DefaultBonus.BonusName = newBonus.BonusName;
 
                 }else if(!newBonus.isPos && newBonus.BonusValue < currentVal){
                     //If new Neg value is < current neg value
-                    DefendCheckForm.formData.playerBonuses_Ary[newBonus.BonusTypeSigned].DefaultBonus.BonusValue = newBonus.BonusValue;
-                    DefendCheckForm.formData.playerBonuses_Ary[newBonus.BonusTypeSigned].DefaultBonus.BonusName = newBonus.BonusName;
+                    this.formData.playerBonuses_Ary[newBonus.BonusTypeSigned].DefaultBonus.BonusValue = newBonus.BonusValue;
+                    this.formData.playerBonuses_Ary[newBonus.BonusTypeSigned].DefaultBonus.BonusName = newBonus.BonusName;
                 }
 
             } //End if(enabled)
         } //End Modifiers for loop
     }
 
-    static updateRollTotal(){
+    updateRollTotal(){
         let tempAtt=0;
         let tempProf=0;
         let tempPoten=0;
@@ -223,10 +223,10 @@ class DefendCheckForm extends FormApplication {
 
         for (let i=0; i<DEFFEND_CHECK_GLOBALS.NUM_BONUS_TYPES_SIGNED; i++)
         {
-            if(DefendCheckForm.formData.playerBonuses_Ary[i].isBonusApplied){
+            if(this.formData.playerBonuses_Ary[i].isBonusApplied){
 
-                let tempBonusValue = DefendCheckForm.formData.playerBonuses_Ary[i].getBonusValue();
-                let tempBonusType = DefendCheckForm.formData.playerBonuses_Ary[i].getSignedBonusType();
+                let tempBonusValue = this.formData.playerBonuses_Ary[i].getBonusValue();
+                let tempBonusType = this.formData.playerBonuses_Ary[i].getSignedBonusType();
 
                 switch(tempBonusType){
                     case DEFFEND_CHECK_GLOBALS.BONUS_TYPES_SIGNED.ATTRIBUTE_POS:
@@ -264,15 +264,15 @@ class DefendCheckForm extends FormApplication {
         /* Calc total bonus */
         let calcDefendBonus = tempAtt+tempProf+tempPoten+tempItem+tempStatus+tempCirc+tempUntyped;
 
-        DefendCheckForm.formData.totalDefendBonus = calcDefendBonus;
+        this.formData.totalDefendBonus = calcDefendBonus;
     }
 
     getData(){
-        DefendCheckForm.parsePlayerData();
-        DefendCheckForm.updateRollTotal();
+        this.parsePlayerData();
+        this.updateRollTotal();
         //Update Everything When form gets rendered or refreshed. 
         //All Updates will happen here
-        return DefendCheckForm.formData;
+        return this.formData;
     }
 
     createRollMessage(){
@@ -329,16 +329,16 @@ class DefendCheckForm extends FormApplication {
     // ==============================================
 
     //update the signedBonusType value for overrideInputValues object
-    static _updateSignedBonusType(){
-        let curBaseBonusType = DefendCheckForm.formData.overrideInputValues.bonusType;
-        let curIsPos = DefendCheckForm.formData.overrideInputValues.isPos;
-        DefendCheckForm.formData.overrideInputValues.bonusTypeSigned = 
+    _updateSignedBonusType(){
+        let curBaseBonusType = this.formData.overrideInputValues.bonusType;
+        let curIsPos = this.formData.overrideInputValues.isPos;
+        this.formData.overrideInputValues.bonusTypeSigned = 
             DEFFEND_CHECK_GLOBALS.get_signed_bonus_type(curBaseBonusType,curIsPos);
     }
 
     //Handle any selections on any of the override checkbox's
     async _handleOverrideCheckbox(event){
-        let plyrData = DefendCheckForm.formData;
+        let plyrData = this.formData;
         let modifierType = parseInt(event.target.value);
         let plyrBonusData = plyrData.playerBonuses_Ary[modifierType];
         let curIsOverwridden = plyrBonusData.isBonusOverridden;
@@ -357,34 +357,34 @@ class DefendCheckForm extends FormApplication {
         }
 
         //Refresh Screen to display new info
-        //DEFFENDER_FORM_OBJ.render();
+        DEFFENDER_FORM_OBJ.render();
     }
 
     //Handle Text input for Override Bonus Text Field
     async _handleNewOverrideBonusTypeText(event){
         //Save Text to Data Model
         const newBonusDescription = event.target.value;
-        DefendCheckForm.formData.overrideInputValues.bonusName = newBonusDescription;
+        this.formData.overrideInputValues.bonusName = newBonusDescription;
     }
 
     //Handle Bonus Type dropdown selection in the "Create new override" inputs
     async _handleNewOverrideBonusTypeDropdown(event){
         const newBonusType = event.target.value;
-        DefendCheckForm.formData.overrideInputValues.bonusType = newBonusType;
-        DefendCheckForm._updateSignedBonusType();
+        this.formData.overrideInputValues.bonusType = newBonusType;
+        this._updateSignedBonusType();
     }
 
     //Handle number value bing input into the override bonus type boxes
     async _handleNewOverrideBonusTypeValueInput(event){
         //Save value to Data Model. Dont Change data model.
         const newBonusValue = parseInt(event.target.value);
-        DefendCheckForm.formData.overrideInputValues.bonusValue = newBonusValue;
+        this.formData.overrideInputValues.bonusValue = newBonusValue;
         if(newBonusValue >= 0){
-            DefendCheckForm.formData.overrideInputValues.isPos = true;
+            this.formData.overrideInputValues.isPos = true;
         }else{
-            DefendCheckForm.formData.overrideInputValues.isPos = false;
+            this.formData.overrideInputValues.isPos = false;
         }
-        DefendCheckForm._updateSignedBonusType();
+        this._updateSignedBonusType();
     }
 
     //Handle *Add* button to add new override value
@@ -394,9 +394,9 @@ class DefendCheckForm extends FormApplication {
 
         //--- Save New bonus to data model ---
         //Get stored override objects & objects to update
-        let toOverrideObj = DefendCheckForm.formData.overrideInputValues;
+        let toOverrideObj = this.formData.overrideInputValues;
         let signedModifier = toOverrideObj.bonusTypeSigned;
-        let plyrBonusData = DefendCheckForm.formData.playerBonuses_Ary[signedModifier];
+        let plyrBonusData = this.formData.playerBonuses_Ary[signedModifier];
         
         //Update player bonus data
         plyrBonusData.isBonusOverridden = true;
@@ -408,7 +408,7 @@ class DefendCheckForm extends FormApplication {
         plyrBonusData.OverrideBonus.isPos = !toOverrideObj.isNeg;
 
         //Update isBonusApplied_Ary incase we added an initally unused bonus
-        DefendCheckForm.formData.isBonusApplied_Ary[signedModifier] = true;
+        this.formData.isBonusApplied_Ary[signedModifier] = true;
 
         //Reset currently saved data in override data store
         toOverrideObj.bonusName = "";
@@ -417,7 +417,7 @@ class DefendCheckForm extends FormApplication {
         toOverrideObj.isPos = true;
 
         //Rerender to display override
-        this.render();
+        DEFFENDER_FORM_OBJ.render();
     }
 
     // ============ END OVERRIDE INPUTS =================
@@ -427,7 +427,7 @@ class DefendCheckForm extends FormApplication {
     // ==================================================
     async _handleDefenceCheckDCInput(event){
         const targetsAttackDCValue = event.target.value;
-        DefendCheckForm.formData.targetsAttackDC = targetsAttackDCValue;
+        this.formData.targetsAttackDC = targetsAttackDCValue;
     }
 
     // ==================================================
@@ -456,6 +456,23 @@ class DefendCheckForm extends FormApplication {
     activateListeners(html) {
         super.activateListeners(html);
 
+        //data-action="d2checkbox"
+        // "[data-action]"
+        // "[df-chk-action]"
+
+        //Checkbox on selections
+        html.on('click',    "[df-chkbx-action]", this._handleOverrideCheckbox.bind(this));    //Override Checkbox (Use override value)
+    
+        //override inputs "#df-mod-override-descrip-text-input"
+        html.on('input',    "#df-mod-override-descrip-text-input",  this._handleNewOverrideBonusTypeText.bind(this));          //Input Text (Name of bonus)
+        html.on('change',   "#df-mod-override-bonus-type-dropdown", this._handleNewOverrideBonusTypeDropdown.bind(this));      //Selection input (Drop down)
+        html.on('input',    "#df-mod-override-value-num-input",     this._handleNewOverrideBonusTypeValueInput.bind(this));    //Input number (New Bonus Value)
+        html.on('click',    "#df-mod-override-confirm-button",      this._handleNewOverrideBonusTypeConfirmButton.bind(this)); //Add value (Confirmation input)
+
+        //Attack DC inputs
+        html.on('input',    "#df-mod-defence-check-dc-input", this._handleDefenceCheckDCInput.bind(this));
+
+        /*
         //Checkbox on selections
         html.on('click',    "#df-mod-use-override-checkbox", this._handleOverrideCheckbox.bind(this));    //Override Checkbox (Use override value)
     
@@ -467,6 +484,7 @@ class DefendCheckForm extends FormApplication {
 
         //Attack DC inputs
         html.on('input',    "#df-mod-defence-check-dc-input", this._handleDefenceCheckDCInput.bind(this));
+        */
     }
 
     /*
