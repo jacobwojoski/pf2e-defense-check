@@ -1,280 +1,266 @@
-<div id="custom_id_stuff_test" class="app roll-modifiers-dialog dice-checks dialog">
-    <header class="window-header flexrow draggable">
-        <h4 class="window-title">Reflex Saving Throw</h4>
-        <a class="header-button control settings tooltipstered">
-            <i class="fa-solid fa-cog"></i>Settings
-        </a>
-        <a class="header-button control close">
-            <i class="fas fa-times"></i>Close
-        </a>
-    </header>
+<form class="check-modifiers-content roll-modifiers-dialog dice-checks dialog">
 
-    <section class="window-content">
-        <form class="check-modifiers-content" autocomplete="off" spellcheck="off">
+    <!-- Display Modifier Headings -->
+    <div class="dialog-row header">
+        <span class="mod">Modifier Source</span>
+        <span class="type">Type</span>
+        <span class="value">Value</span>
+        <span class="exclude">Override</span>
+    </div>
 
-            <!-- Display Modifier Headings -->
-            <div class="dialog-row header">
-                <span class="mod">Modifier Source</span>
-                <span class="type">Type</span>
-                <span class="value">Value</span>
-                <span class="exclude">Override</span>
+    <!-- Display Modifiers container -->
+    <div class="modifier-container">
+
+        <!-- Attribute Bonus Display Posive -->
+        {{#if playerBonuses_Ary.[0].isBonusApplied }}
+        <div class="dialog-row">
+            <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[0]}}}</span>
+            <span class="type"><span class="tag">Attribute</span></span>
+            <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[0]}}}</span>
+            <div class="exclude">
+                <label class="toggle">
+                    <input type="checkbox" df-chkbx-action="0" id="df-mod-use-override-checkbox" value="0" data-modifier-index="0" {{{defend_form_IsChecked playerBonuses_Ary.[0].isBonusOverridden}}}>
+                    <span class="widget"></span>
+                </label>
             </div>
+        </div>
+        {{/if}}
 
-            <!-- Display Modifiers container -->
-            <div class="modifier-container">
-
-                <!-- Attribute Bonus Display Posive -->
-                {{#if playerBonuses_Ary.[0].isBonusApplied }}
-                <div class="dialog-row">
-                    <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[0]}}}</span>
-                    <span class="type"><span class="tag">Attribute</span></span>
-                    <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[0]}}}</span>
-                    <div class="exclude">
-                        <label class="toggle">
-                            <input type="checkbox" df-chkbx-action="0" id="df-mod-use-override-checkbox" value="0" data-modifier-index="0" {{{defend_form_IsChecked playerBonuses_Ary.[0].isBonusOverridden}}}>
-                            <span class="widget"></span>
-                        </label>
-                    </div>
-                </div>
-                {{/if}}
-
-                {{#if playerBonuses_Ary.[7].isBonusApplied }}
-                <!-- Attribute Bonus Display Negative -->
-                <div class="dialog-row">
-                    <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[7]}}}</span>
-                    <span class="type"><span class="tag">Attribute</span></span>
-                    <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[7]}}}</span>
-                    <div class="exclude">
-                        <label class="toggle">
-                            <input type="checkbox" df-chkbx-action="7" id="df-mod-use-override-checkbox" value="7" data-modifier-index="7" {{{defend_form_IsChecked playerBonuses_Ary.[7].isBonusOverridden}}}>
-                            <span class="widget"></span>
-                        </label>
-                    </div>
-                </div>
-                {{/if}}
-
-                {{#if playerBonuses_Ary.[1].isBonusApplied }}
-                <!-- Proficency Bonus Display Positive -->
-                <div class="dialog-row">
-                    <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[1]}}}</span>
-                    <span class="type"><span class="tag">Proficiency</span></span>
-                    <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[1]}}}</span>
-
-                    <div class="exclude">
-                        <label class="toggle">
-                            <input type="checkbox" df-chkbx-action="1" id="df-mod-use-override-checkbox" value="1" data-modifier-index="1" {{{defend_form_IsChecked playerBonuses_Ary.[1].isBonusOverridden}}}>
-                            <span class="widget"></span>
-                        </label>
-                    </div>
-                </div>
-                {{/if}}
-
-                {{#if playerBonuses_Ary.[8].isBonusApplied }}
-                <!-- Proficency Bonus Display Negative-->
-                <div class="dialog-row">
-                    <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[8]}}}</span>
-                    <span class="type"><span class="tag">Proficiency</span></span>
-                    <span class="value">-{{{defend_form_get_bonus_value playerBonuses_Ary.[8]}}}</span>
-                    <div class="exclude">
-                        <label class="toggle">
-                            <input type="checkbox" df-chkbx-action="8" id="df-mod-use-override-checkbox" value="8" data-modifier-index="8" {{{defend_form_IsChecked playerBonuses_Ary.[8].isBonusOverridden}}}>
-                            <span class="widget"></span>
-                        </label>
-                    </div>
-                </div>
-                {{/if}}
-
-                {{#if playerBonuses_Ary.[2].isBonusApplied }}
-                <!-- Potency Bonus Display Positive -->
-                <div class="dialog-row">
-                    <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[2]}}}</span>
-                    <span class="type"><span class="tag">Potency</span></span>
-                    <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[2]}}}</span>
-                    <div class="exclude">
-                        <label class="toggle">
-                            <input type="checkbox" df-chkbx-action="2" id="df-mod-use-override-checkbox" value="2" data-modifier-index="2" {{{defend_form_IsChecked playerBonuses_Ary.[2].isBonusOverridden}}}>
-                            <span class="widget"></span>
-                        </label>
-                    </div>
-                </div>
-                {{/if}}
-
-                {{#if playerBonuses_Ary.[9].isBonusApplied }}
-                <!-- Potency Bonus Display Negative -->
-                <div class="dialog-row">
-                    <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[9]}}}</span>
-                    <span class="type"><span class="tag">Potency</span></span>
-                    <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[9]}}}</span>
-                    <div class="exclude">
-                        <label class="toggle">
-                            <input type="checkbox" df-chkbx-action="9" id="df-mod-use-override-checkbox" value="9" data-modifier-index="9" {{{defend_form_IsChecked playerBonuses_Ary.[9].isBonusOverridden}}}>
-                            <span class="widget"></span>
-                        </label>
-                    </div>
-                </div>
-                {{/if}}
-
-                {{#if playerBonuses_Ary.[3].isBonusApplied }}
-                <!-- Item Bonus Display Positive -->
-                <div class="dialog-row">
-                    <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[3]}}}</span>
-                    <span class="type"><span class="tag">Item</span></span>
-                    <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[3]}}}</span>
-                    <div class="exclude">
-                        <label class="toggle">
-                            <input type="checkbox" df-chkbx-action="3" id="df-mod-use-override-checkbox" value="3" data-modifier-index="3" {{{defend_form_IsChecked playerBonuses_Ary.[3].isBonusOverridden}}}>
-                            <span class="widget"></span>
-                        </label>
-                    </div>
-                </div>
-                {{/if}}
-
-                {{#if playerBonuses_Ary.[10].isBonusApplied }}
-                <!-- Item Bonus Display Negative -->
-                <div class="dialog-row">
-                    <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[10]}}}</span>
-                    <span class="type"><span class="tag">Item</span></span>
-                    <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[10]}}}</span>
-                    <div class="exclude">
-                        <label class="toggle">
-                            <input type="checkbox" df-chkbx-action="10" id="df-mod-use-override-checkbox" value="10" data-modifier-index="10" {{{defend_form_IsChecked playerBonuses_Ary.[10].isBonusOverridden}}}>
-                            <span class="widget"></span>
-                        </label>
-                    </div>
-                </div>
-                {{/if}}
-
-                {{#if playerBonuses_Ary.[4].isBonusApplied }}
-                <!-- Status Bonus Display Positive -->
-                <div class="dialog-row">
-                    <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[4]}}}</span>
-                    <span class="type"><span class="tag">Stats</span></span>
-                    <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[4]}}}</span>
-                    <div class="exclude">
-                        <label class="toggle">
-                            <input type="checkbox" df-chkbx-action="4" id="df-mod-use-override-checkbox" value="4" data-modifier-index="4" {{{defend_form_IsChecked playerBonuses_Ary.[4].isBonusOverridden}}}>
-                            <span class="widget"></span>
-                        </label>
-                    </div>
-                </div>
-                {{/if}}
-
-                {{#if playerBonuses_Ary.[11].isBonusApplied }}
-                <!-- Status Bonus Display Negative -->
-                <div class="dialog-row">
-                    <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[11]}}}</span>
-                    <span class="type"><span class="tag">Stats</span></span>
-                    <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[11]}}}</span>
-                    <div class="exclude">
-                        <label class="toggle">
-                            <input type="checkbox" df-chkbx-action="11" id="df-mod-use-override-checkbox" value="11" data-modifier-index="11" {{{defend_form_IsChecked playerBonuses_Ary.[11].isBonusOverridden}}}>
-                            <span class="widget"></span>
-                        </label>
-                    </div>
-                </div>
-                {{/if}}
-
-                {{#if playerBonuses_Ary.[5].isBonusApplied }}
-                <!-- Circumstance Bonus Display Positive -->
-                <div class="dialog-row">
-                    <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[5]}}}</span>
-                    <span class="type"><span class="tag">Circumstance</span></span>
-                    <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[5]}}}</span>
-                    <div class="exclude">
-                        <label class="toggle">
-                            <input type="checkbox" df-chkbx-action="5" id="df-mod-use-override-checkbox" value="5" data-modifier-index="5" {{{defend_form_IsChecked playerBonuses_Ary.[5].isBonusOverridden}}}>
-                            <span class="widget"></span>
-                        </label>
-                    </div>
-                </div>
-                {{/if}}
-
-                {{#if playerBonuses_Ary.[12].isBonusApplied }}
-                <!-- Circumstance Bonus Display Negative -->
-                <div class="dialog-row">
-                    <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[12]}}}</span>
-                    <span class="type"><span class="tag">Circumstance</span></span>
-                    <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[12]}}}</span>
-                    <div class="exclude">
-                        <label class="toggle">
-                            <input type="checkbox" df-chkbx-action="12" id="df-mod-use-override-checkbox" value="12" data-modifier-index="12" {{{defend_form_IsChecked playerBonuses_Ary.[12].isBonusOverridden}}}>
-                            <span class="widget"></span>
-                        </label>
-                    </div>
-                </div>
-                {{/if}}
-
-                {{#if playerBonuses_Ary.[6].isBonusApplied }}
-                <!-- Untyped Bonus Display Positive -->
-                <div class="dialog-row">
-                    <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[6]}}}</span>
-                    <span class="type"><span class="tag">Untyped</span></span>
-                    <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[6]}}}</span>
-                    <div class="exclude">
-                        <label class="toggle">
-                            <input type="checkbox" df-chkbx-action="6" id="df-mod-use-override-checkbox" value="6" data-modifier-index="6" {{{defend_form_IsChecked playerBonuses_Ary.[6].isBonusOverridden}}}>
-                            <span class="widget"></span>
-                        </label>
-                    </div>
-                </div>
-                {{/if}}
-
-                {{#if playerBonuses_Ary.[13].isBonusApplied }}
-                <!-- Untyped Bonus Display Negative -->
-                <div class="dialog-row">
-                    <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[13]}}}</span>
-                    <span class="type"><span class="tag">Untyped</span></span>
-                    <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[13]}}}</span>
-                    <div class="exclude">
-                        <label class="toggle">
-                            <input type="checkbox" df-chkbx-action="13" id="df-mod-use-override-checkbox" value="13" data-modifier-index="13" {{{defend_form_IsChecked playerBonuses_Ary.[13].isBonusOverridden}}}>
-                            <span class="widget"></span>
-                        </label>
-                    </div>
-                </div>
-                {{/if}}
-
+        {{#if playerBonuses_Ary.[7].isBonusApplied }}
+        <!-- Attribute Bonus Display Negative -->
+        <div class="dialog-row">
+            <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[7]}}}</span>
+            <span class="type"><span class="tag">Attribute</span></span>
+            <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[7]}}}</span>
+            <div class="exclude">
+                <label class="toggle">
+                    <input type="checkbox" df-chkbx-action="7" id="df-mod-use-override-checkbox" value="7" data-modifier-index="7" {{{defend_form_IsChecked playerBonuses_Ary.[7].isBonusOverridden}}}>
+                    <span class="widget"></span>
+                </label>
             </div>
-            <hr>
+        </div>
+        {{/if}}
 
-            <!-- Override Current Attribute -->
-            <section class="add-entry-row add-modifier-panel">
-                <input type="text" id="df-mod-override-descrip-text-input" class="add-modifier-name" placeholder="New Modifiers Name">
-                <select class="add-modifier-type" id="df-mod-override-bonus-type-dropdown">
-                    <!-- values associated with DEFFEND_CHECK_GLOBALS.BONUS_TYPES -->
-                    <option value="6">Untyped</option>
-                    <option value="5" selected="">Circumstance</option>
-                    <option value="4">Status</option>
-                    <option value="3">Item</option>
-                    <option value="2">Potency</option>
-                    <option value="1">Proficiency</option>
-                    <option value="0">Attribute</option>
-                </select>
-                <input type="number" id="df-mod-override-value-num-input" class="add-modifier-value" placeholder="+1">
-                <button type="button" id="df-mod-override-confirm-button" class="add-modifier my-confrm-btn-class">+Add</button>
-            </section>
-            <hr>
+        {{#if playerBonuses_Ary.[1].isBonusApplied }}
+        <!-- Proficency Bonus Display Positive -->
+        <div class="dialog-row">
+            <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[1]}}}</span>
+            <span class="type"><span class="tag">Proficiency</span></span>
+            <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[1]}}}</span>
 
-            <!-- Input Field for Tagets Attack DC -->
-            <div class="dialog-row">
-                <span class="mod">Targets Attack DC (Attack Bonus +10):</span>
-                <span class="defense-target-dc-title"> <input id="df-mod-defence-check-dc-input" type="number" class="value" placeholder=""> </span>
+            <div class="exclude">
+                <label class="toggle">
+                    <input type="checkbox" df-chkbx-action="1" id="df-mod-use-override-checkbox" value="1" data-modifier-index="1" {{{defend_form_IsChecked playerBonuses_Ary.[1].isBonusOverridden}}}>
+                    <span class="widget"></span>
+                </label>
             </div>
+        </div>
+        {{/if}}
 
-            <!-- Adjust Roll Type -->
-            <div class="roll-mode-panel">
-                <span class="label">Roll Mode</span>
-                <select name="rollmode">
-                            <option value="publicroll" selected="">Public Roll</option>
-                            <option value="gmroll">Private GM Roll</option>
-                            <option value="blindroll">Blind GM Roll</option>
-                            <option value="selfroll">Self Roll</option>
-                </select>
+        {{#if playerBonuses_Ary.[8].isBonusApplied }}
+        <!-- Proficency Bonus Display Negative-->
+        <div class="dialog-row">
+            <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[8]}}}</span>
+            <span class="type"><span class="tag">Proficiency</span></span>
+            <span class="value">-{{{defend_form_get_bonus_value playerBonuses_Ary.[8]}}}</span>
+            <div class="exclude">
+                <label class="toggle">
+                    <input type="checkbox" df-chkbx-action="8" id="df-mod-use-override-checkbox" value="8" data-modifier-index="8" {{{defend_form_IsChecked playerBonuses_Ary.[8].isBonusOverridden}}}>
+                    <span class="widget"></span>
+                </label>
             </div>
-            <hr>
+        </div>
+        {{/if}}
 
-            <!-- Roll Defense Check Button -->
-            <button type="button" class="roll">Roll ({{{defend_form_getBonusTotal totalDefendBonus}}})</button>
-        </form>
+        {{#if playerBonuses_Ary.[2].isBonusApplied }}
+        <!-- Potency Bonus Display Positive -->
+        <div class="dialog-row">
+            <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[2]}}}</span>
+            <span class="type"><span class="tag">Potency</span></span>
+            <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[2]}}}</span>
+            <div class="exclude">
+                <label class="toggle">
+                    <input type="checkbox" df-chkbx-action="2" id="df-mod-use-override-checkbox" value="2" data-modifier-index="2" {{{defend_form_IsChecked playerBonuses_Ary.[2].isBonusOverridden}}}>
+                    <span class="widget"></span>
+                </label>
+            </div>
+        </div>
+        {{/if}}
+
+        {{#if playerBonuses_Ary.[9].isBonusApplied }}
+        <!-- Potency Bonus Display Negative -->
+        <div class="dialog-row">
+            <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[9]}}}</span>
+            <span class="type"><span class="tag">Potency</span></span>
+            <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[9]}}}</span>
+            <div class="exclude">
+                <label class="toggle">
+                    <input type="checkbox" df-chkbx-action="9" id="df-mod-use-override-checkbox" value="9" data-modifier-index="9" {{{defend_form_IsChecked playerBonuses_Ary.[9].isBonusOverridden}}}>
+                    <span class="widget"></span>
+                </label>
+            </div>
+        </div>
+        {{/if}}
+
+        {{#if playerBonuses_Ary.[3].isBonusApplied }}
+        <!-- Item Bonus Display Positive -->
+        <div class="dialog-row">
+            <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[3]}}}</span>
+            <span class="type"><span class="tag">Item</span></span>
+            <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[3]}}}</span>
+            <div class="exclude">
+                <label class="toggle">
+                    <input type="checkbox" df-chkbx-action="3" id="df-mod-use-override-checkbox" value="3" data-modifier-index="3" {{{defend_form_IsChecked playerBonuses_Ary.[3].isBonusOverridden}}}>
+                    <span class="widget"></span>
+                </label>
+            </div>
+        </div>
+        {{/if}}
+
+        {{#if playerBonuses_Ary.[10].isBonusApplied }}
+        <!-- Item Bonus Display Negative -->
+        <div class="dialog-row">
+            <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[10]}}}</span>
+            <span class="type"><span class="tag">Item</span></span>
+            <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[10]}}}</span>
+            <div class="exclude">
+                <label class="toggle">
+                    <input type="checkbox" df-chkbx-action="10" id="df-mod-use-override-checkbox" value="10" data-modifier-index="10" {{{defend_form_IsChecked playerBonuses_Ary.[10].isBonusOverridden}}}>
+                    <span class="widget"></span>
+                </label>
+            </div>
+        </div>
+        {{/if}}
+
+        {{#if playerBonuses_Ary.[4].isBonusApplied }}
+        <!-- Status Bonus Display Positive -->
+        <div class="dialog-row">
+            <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[4]}}}</span>
+            <span class="type"><span class="tag">Stats</span></span>
+            <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[4]}}}</span>
+            <div class="exclude">
+                <label class="toggle">
+                    <input type="checkbox" df-chkbx-action="4" id="df-mod-use-override-checkbox" value="4" data-modifier-index="4" {{{defend_form_IsChecked playerBonuses_Ary.[4].isBonusOverridden}}}>
+                    <span class="widget"></span>
+                </label>
+            </div>
+        </div>
+        {{/if}}
+
+        {{#if playerBonuses_Ary.[11].isBonusApplied }}
+        <!-- Status Bonus Display Negative -->
+        <div class="dialog-row">
+            <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[11]}}}</span>
+            <span class="type"><span class="tag">Stats</span></span>
+            <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[11]}}}</span>
+            <div class="exclude">
+                <label class="toggle">
+                    <input type="checkbox" df-chkbx-action="11" id="df-mod-use-override-checkbox" value="11" data-modifier-index="11" {{{defend_form_IsChecked playerBonuses_Ary.[11].isBonusOverridden}}}>
+                    <span class="widget"></span>
+                </label>
+            </div>
+        </div>
+        {{/if}}
+
+        {{#if playerBonuses_Ary.[5].isBonusApplied }}
+        <!-- Circumstance Bonus Display Positive -->
+        <div class="dialog-row">
+            <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[5]}}}</span>
+            <span class="type"><span class="tag">Circumstance</span></span>
+            <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[5]}}}</span>
+            <div class="exclude">
+                <label class="toggle">
+                    <input type="checkbox" df-chkbx-action="5" id="df-mod-use-override-checkbox" value="5" data-modifier-index="5" {{{defend_form_IsChecked playerBonuses_Ary.[5].isBonusOverridden}}}>
+                    <span class="widget"></span>
+                </label>
+            </div>
+        </div>
+        {{/if}}
+
+        {{#if playerBonuses_Ary.[12].isBonusApplied }}
+        <!-- Circumstance Bonus Display Negative -->
+        <div class="dialog-row">
+            <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[12]}}}</span>
+            <span class="type"><span class="tag">Circumstance</span></span>
+            <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[12]}}}</span>
+            <div class="exclude">
+                <label class="toggle">
+                    <input type="checkbox" df-chkbx-action="12" id="df-mod-use-override-checkbox" value="12" data-modifier-index="12" {{{defend_form_IsChecked playerBonuses_Ary.[12].isBonusOverridden}}}>
+                    <span class="widget"></span>
+                </label>
+            </div>
+        </div>
+        {{/if}}
+
+        {{#if playerBonuses_Ary.[6].isBonusApplied }}
+        <!-- Untyped Bonus Display Positive -->
+        <div class="dialog-row">
+            <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[6]}}}</span>
+            <span class="type"><span class="tag">Untyped</span></span>
+            <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[6]}}}</span>
+            <div class="exclude">
+                <label class="toggle">
+                    <input type="checkbox" df-chkbx-action="6" id="df-mod-use-override-checkbox" value="6" data-modifier-index="6" {{{defend_form_IsChecked playerBonuses_Ary.[6].isBonusOverridden}}}>
+                    <span class="widget"></span>
+                </label>
+            </div>
+        </div>
+        {{/if}}
+
+        {{#if playerBonuses_Ary.[13].isBonusApplied }}
+        <!-- Untyped Bonus Display Negative -->
+        <div class="dialog-row">
+            <span class="mod">{{{defend_form_get_bonus_name playerBonuses_Ary.[13]}}}</span>
+            <span class="type"><span class="tag">Untyped</span></span>
+            <span class="value">{{{defend_form_get_bonus_value playerBonuses_Ary.[13]}}}</span>
+            <div class="exclude">
+                <label class="toggle">
+                    <input type="checkbox" df-chkbx-action="13" id="df-mod-use-override-checkbox" value="13" data-modifier-index="13" {{{defend_form_IsChecked playerBonuses_Ary.[13].isBonusOverridden}}}>
+                    <span class="widget"></span>
+                </label>
+            </div>
+        </div>
+        {{/if}}
+
+    </div>
+    <hr>
+
+    <!-- Override Current Attribute -->
+    <section class="add-entry-row add-modifier-panel">
+        <input type="text" id="df-mod-override-descrip-text-input" class="add-modifier-name" placeholder="New Modifiers Name">
+        <select class="add-modifier-type" id="df-mod-override-bonus-type-dropdown">
+            <!-- values associated with DEFFEND_CHECK_GLOBALS.BONUS_TYPES -->
+            <option value="6">Untyped</option>
+            <option value="5" selected="">Circumstance</option>
+            <option value="4">Status</option>
+            <option value="3">Item</option>
+            <option value="2">Potency</option>
+            <option value="1">Proficiency</option>
+            <option value="0">Attribute</option>
+        </select>
+        <input type="number" id="df-mod-override-value-num-input" class="add-modifier-value" placeholder="+1">
+        <button type="button" id="df-mod-override-confirm-button" class="add-modifier my-confrm-btn-class">+Add</button>
     </section>
-</div>
+    <hr>
+
+    <!-- Input Field for Tagets Attack DC -->
+    <div class="dialog-row">
+        <span class="mod">Targets Attack DC (Attack Bonus +10):</span>
+        <span class="defense-target-dc-title"> <input id="df-mod-defence-check-dc-input" type="number" class="value" placeholder=""> </span>
+    </div>
+
+    <!-- Adjust Roll Type -->
+    <div class="roll-mode-panel">
+        <span class="label">Roll Mode</span>
+        <select name="rollmode">
+                    <option value="publicroll" selected="">Public Roll</option>
+                    <option value="gmroll">Private GM Roll</option>
+                    <option value="blindroll">Blind GM Roll</option>
+                    <option value="selfroll">Self Roll</option>
+        </select>
+    </div>
+    <hr>
+
+    <!-- Roll Defense Check Button -->
+    <button type="button" class="roll">Roll ({{{defend_form_getBonusTotal totalDefendBonus}}})</button>
+</form>
