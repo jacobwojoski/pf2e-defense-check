@@ -113,6 +113,9 @@ class DefendCheckForm extends FormApplication {
         }
 
         /* Reset isApplied to false */
+        /* TODO: Edit isBonusApplied if an Override Is present 
+            (These get removed on init so means it must have been added by player) 
+        */
         this.formData.isBonusApplied_Ary.fill(false);
         for(let i=0; i<DEFFEND_CHECK_GLOBALS.NUM_BONUS_TYPES_SIGNED; i++){
             this.formData.playerBonuses_Ary[i].isBonusApplied = false;
@@ -410,7 +413,9 @@ class DefendCheckForm extends FormApplication {
         this.formData.playerBonuses_Ary[signedModifier].OverrideBonus.isPos = !toOverrideObj.isNeg;
 
         //Update isBonusApplied_Ary incase we added an initally unused bonus
+        this.formData.playerBonuses_Ary[signedModifier].isBonusApplied = true;
         this.formData.isBonusApplied_Ary[signedModifier] = true;
+        
 
         //Reset currently saved data in override data store
         this.formData.overrideInputValues.bonusName = "";
