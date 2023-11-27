@@ -50,4 +50,20 @@ class DEFFEND_CHECK_GLOBALS {
             return parseInt(parseInt(baseBonusType)+parseInt(this.NUM_BONUS_TYPES));
         }
     }
+
+    static get_base_bonus_type(signedBonusTypeEnum){
+        if(signedBonusTypeEnum >= DEFFEND_CHECK_GLOBALS.NUM_BONUS_TYPES){
+            return parseInt(signedBonusTypeEnum-DEFFEND_CHECK_GLOBALS.NUM_BONUS_TYPES);
+        }else{
+            return parseInt(signedBonusTypeEnum);
+        }
+    }
+
+    static get_is_pos(signedBonusTypeEnum){
+        if(signedBonusTypeEnum >= DEFFEND_CHECK_GLOBALS.NUM_BONUS_TYPES){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

@@ -32,16 +32,13 @@ class CustomPlayerBonus {
     isBonusApplied =    false;
 
     constructor(signedBonusTypeEnum){
-        this.BonusTypeSigned   = signedBonusTypeEnum;
+        this.BonusTypeSigned    = signedBonusTypeEnum;
         this.DefaultBonus       = new CustomBonusClass(signedBonusTypeEnum);
         this.OverrideBonus      = new CustomBonusClass(signedBonusTypeEnum);
-        if(signedBonusTypeEnum >= DEFFEND_CHECK_GLOBALS.NUM_BONUS_TYPES){
-            this.isPos      = false;
-            this.BonusType  = signedBonusTypeEnum-DEFFEND_CHECK_GLOBALS.NUM_BONUS_TYPES;
-        }else{
-            this.isPos      = true;
-            this.BonusType  = signedBonusTypeEnum;
-        }
+        this.isPos              = DEFFEND_CHECK_GLOBALS.get_is_pos(signedBonusTypeEnum);
+        this.BonusType          = DEFFEND_CHECK_GLOBALS.get_base_bonus_type(signedBonusTypeEnum);
+        this.isBonusOverridden  = false;
+        this.isBonusApplied     = false;
     }
 
     /* Get the current value bing used */
@@ -190,6 +187,7 @@ class DefendCheckForm extends FormApplication {
                         break;
                 } //End Bonus Tyoe Switch Case\
 
+                //Make sure its a int
                 newBonus.BonusTypeSigned = parseInt(newBonus.BonusTypeSigned);
 
                 //We found an active bonus, update isBonusApplied
@@ -360,8 +358,9 @@ class DefendCheckForm extends FormApplication {
         }
 
         //Refresh Screen to display new info
-        DEFFENDER_FORM_OBJ.render();
-        DEFFENDER_FORM_OBJ.activateListeners(this.element);
+        //DEFFENDER_FORM_OBJ.render();
+        //DEFFENDER_FORM_OBJ.activateListeners(this.element);
+        this.render()
     }
 
     //Handle Text input for Override Bonus Text Field
@@ -400,29 +399,29 @@ class DefendCheckForm extends FormApplication {
         //Get stored override objects & objects to update
         let toOverrideObj = this.formData.overrideInputValues;
         let signedModifier = toOverrideObj.bonusTypeSigned;
-        let plyrBonusData = this.formData.playerBonuses_Ary[signedModifier];
         
         //Update player bonus data
-        plyrBonusData.isBonusOverridden = true;
-        plyrBonusData.isPos = toOverrideObj.isPos;
+        this.formData.playerBonuses_Ary[signedModifier].isBonusOverridden = true;
+        this.formData.playerBonuses_Ary[signedModifier].isPos = toOverrideObj.isPos;
 
         //update override object
-        plyrBonusData.OverrideBonus.BonusName = toOverrideObj.bonusName;
-        plyrBonusData.OverrideBonus.BonusValue = toOverrideObj.bonusValue;
-        plyrBonusData.OverrideBonus.isPos = !toOverrideObj.isNeg;
+        this.formData.playerBonuses_Ary[signedModifier].OverrideBonus.BonusName = toOverrideObj.bonusName;
+        this.formData.playerBonuses_Ary[signedModifier].OverrideBonus.BonusValue = toOverrideObj.bonusValue;
+        this.formData.playerBonuses_Ary[signedModifier].OverrideBonus.isPos = !toOverrideObj.isNeg;
 
         //Update isBonusApplied_Ary incase we added an initally unused bonus
         this.formData.isBonusApplied_Ary[signedModifier] = true;
 
         //Reset currently saved data in override data store
-        toOverrideObj.bonusName = "";
-        toOverrideObj.bonusValue = 5;
-        toOverrideObj.bonusTypeSigned = 5;
-        toOverrideObj.isPos = true;
+        this.formData.overrideInputValues.bonusName = "";
+        this.formData.overrideInputValues.bonusValue = 5;
+        this.formData.overrideInputValues.bonusTypeSigned = 5;
+        this.formData.overrideInputValues.isPos = true;
 
         //Rerender to display override
-        DEFFENDER_FORM_OBJ.render();
-        DEFFENDER_FORM_OBJ.activateListeners(this.element);
+        //DEFFENDER_FORM_OBJ.render();
+        //DEFFENDER_FORM_OBJ.activateListeners(this.element);
+        this.render();
     }
 
     // ============ END OVERRIDE INPUTS =================
