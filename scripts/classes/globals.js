@@ -45,9 +45,9 @@ class DEFFEND_CHECK_GLOBALS {
     static get_signed_bonus_type(baseBonusType, isPos=true)
     {
         if(isPos){
-            return baseBonusType;
+            return parseInt(baseBonusType);
         }else{
-            return baseBonusType+this.NUM_BONUS_TYPES;
+            return parseInt(parseInt(baseBonusType)+parseInt(this.NUM_BONUS_TYPES));
         }
     }
 }
