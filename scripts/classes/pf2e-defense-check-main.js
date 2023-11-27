@@ -113,12 +113,19 @@ class DefendCheckForm extends FormApplication {
         }
 
         /* Reset isApplied to false */
-        /* TODO: Edit isBonusApplied if an Override Is present 
-            (These get removed on init so means it must have been added by player) 
-        */
         this.formData.isBonusApplied_Ary.fill(false);
         for(let i=0; i<DEFFEND_CHECK_GLOBALS.NUM_BONUS_TYPES_SIGNED; i++){
             this.formData.playerBonuses_Ary[i].isBonusApplied = false;
+        }
+
+        /* isBonusApplied if an Override Is present 
+            (These get removed on init so means it must have been added by player) 
+        */
+        for(let i=0; i<DEFFEND_CHECK_GLOBALS.NUM_BONUS_TYPES_SIGNED; i++){
+            if(this.formData.playerBonuses_Ary[i].OverrideBonus.BonusValue != 0){
+                this.formData.playerBonuses_Ary[i].isBonusApplied = true;
+                this.formData.isBonusApplied_Ary[i] = true;
+            }
         }
 
         /* loop through all currently applied modifiers to the players AC and save them */
