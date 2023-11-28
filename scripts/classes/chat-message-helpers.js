@@ -40,7 +40,7 @@ class DF_CHECK_MESSAGE_HELPERS {
         }
     }
     
-    static createHTMLstring(this.formData, rollFormula, dieResult, totalResult, modifiersString, outcomeString)
+    static createHTMLstring(rollFormula, dieResult, totalResult, modifiersString, outcomeString)
     {
         let part1 = `
             <div class="message-content">
