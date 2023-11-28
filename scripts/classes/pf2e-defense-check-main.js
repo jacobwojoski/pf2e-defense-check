@@ -628,10 +628,10 @@ class DefendCheckForm extends FormApplication {
                                                                     degSuccess);
 
         /* Roll Types
-        let isBlind = false;
-        let isBlindGM = false;
-        let isSelfRoll = false;
-        let isPrivateGM = false;
+            let isBlind = false;
+            let isBlindGM = false;
+            let isSelfRoll = false;
+            let isPrivateGM = false;
         */
             //TODO: MAKE THIS WORK
         let isBlindRoll = false;
