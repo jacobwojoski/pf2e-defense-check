@@ -79,6 +79,8 @@ class DefendCheckForm extends FormApplication {
         },
         totalDefendBonus: 0, /* INT */
         rollType: 0,         /* ROLL TYPE */
+        rollFormula: '',
+        bonusNames: []
     };
 
     constructor(passedInActorID){
@@ -275,6 +277,13 @@ class DefendCheckForm extends FormApplication {
 
         /* Calc total bonus */
         let calcDefendBonus = tempAtt+tempProf+tempPoten+tempItem+tempStatus+tempCirc+tempUntyped;
+        rollFormula =   String(tempAtt)+'+'+
+                        String(tempProf)+'+'+
+                        String(tempPoten)+'+'+
+                        String(tempItem)+'+'+
+                        String(tempStatus)+'+'+
+                        String(tempCirc)+'+'+
+                        String(tempUntyped);
 
         this.formData.totalDefendBonus = calcDefendBonus;
     }
@@ -286,55 +295,6 @@ class DefendCheckForm extends FormApplication {
         //All Updates will happen here
         const clone = JSON.parse(JSON.stringify(this.formData));
         return clone;
-    }
-
-    createRollMessage(){
-        // This is untested and un verifed,
-        // Want to make roll data that shows how much the player hit or missed by
-            // TODO
-        const customCSS = `
-            .custom-hit-by {
-                background-color: #ffcc00;
-                border: 2px solid #ff9900;
-                padding: 10px;
-                border-radius: 5px;
-                font-weight: bold;
-            }
-            .custom-miss {
-                background-color: #ffcc00;
-                border: 2px solid #ff9900;
-                padding: 10px;
-                border-radius: 5px;
-                font-weight: bold;
-            }
-        `;
-
-        // Inject the custom CSS into the document head
-        const styleElement = document.createElement("style");
-        styleElement.innerHTML = customCSS;
-        document.head.appendChild(styleElement);
-
-        // Define a roll formula and roll the dice
-        const rollFormula = '2d6+3';
-        const roll = new Roll(rollFormula).roll();
-
-        // Create a custom chat message with roll data
-        const chatData = {
-            content: `
-            <div class="custom-miss">
-                <p>This is a custom chat message with a roll:</p>
-                <p>Roll Formula: ${rollFormula}</p>
-                <p>Result: ${roll.total}</p>
-                ${game.user.isGM ? '<p>GM Only: This sentence is visible only to the GM.</p>' : ''}
-            </div>
-            `,
-            speaker: ChatMessage.getSpeaker({ actor: game.user.character }),
-            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-            roll: roll,
-        };
-
-        // Send the custom chat message to the chat log
-        ChatMessage.create(chatData, {});
     }
 
     // ==============================================
@@ -463,7 +423,7 @@ class DefendCheckForm extends FormApplication {
     // ==================================================
     // ================== ROLL SELECTIONS ===============
     // ==================================================
-    
+
     async _handleRollTypedropdown(event){
         const newRollType = event.target.value;
         this.formData.rollType = newRollType;
@@ -471,7 +431,60 @@ class DefendCheckForm extends FormApplication {
 
     async _handleRollButton(event){
         //create and display message
-        this.createRollMessage();
+        // This is untested and un verifed,
+        // Want to make roll data that shows how much the player hit or missed by
+            // TODO
+            const customCSS = `
+            .custom-hit-by {
+                background-color: #ffcc00;
+                border: 2px solid #ff9900;
+                padding: 10px;
+                border-radius: 5px;
+                font-weight: bold;
+            }
+            .custom-miss {
+                background-color: #ffcc00;
+                border: 2px solid #ff9900;
+                padding: 10px;
+                border-radius: 5px;
+                font-weight: bold;
+            }
+
+            .custom-modifier {
+                background-color: grey;
+                font-size: 5px;
+                border-size: 2px;
+            }
+        `;
+
+        // Inject the custom CSS into the document head
+        const styleElement = document.createElement("style");
+        styleElement.innerHTML = customCSS;
+        document.head.appendChild(styleElement);
+
+        // Define a roll formula and roll the dice
+        const rollFormula = '1d20+'+String(this.formData.totalDefendBonus);
+        const roll = await new Roll(rollFormula).roll();
+
+        // Create a custom chat message with roll data
+        const chatData = {
+            content: `
+            <div class="custom-miss">
+                <p>This is a custom chat message with a roll:</p>
+                <p>Roll Formula: ${rollFormula}</p>
+                <p>Roll Result: ${roll.dice[0].total}<p>
+                <p>Total: ${roll.total}</p>
+                <p>/r 1d20</p>
+                ${game.user.isGM ? '<p>GM Only: This sentence is visible only to the GM.</p>' : ''}
+            </div>
+            `,
+            speaker: ChatMessage.getSpeaker({ actor: game.user.character }),
+            type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+            roll: roll,
+        };
+
+        // Send the custom chat message to the chat log
+        ChatMessage.create(chatData, {});
     }
     
     activateListeners(html) {
