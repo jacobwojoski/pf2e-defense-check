@@ -627,9 +627,26 @@ class DefendCheckForm extends FormApplication {
                                                                     outcomeString, this.formData.targetsAttackDC, 
                                                                     degSuccess);
 
+        /* Roll Types
+        let isBlind = false;
+        let isBlindGM = false;
+        let isSelfRoll = false;
+        let isPrivateGM = false;
+        */
+            //TODO: MAKE THIS WORK
+        let isBlindRoll = false;
+        switch(this.rollType){
+            case DEFFEND_CHECK_GLOBALS.ROLL_TYPES.BLIND_GM_ROLL:
+            case DEFFEND_CHECK_GLOBALS.ROLL_TYPES.PRIVATE_GM_ROLL:
+                isBlindRoll=true;
+            break;
+            default:
+        }
+
         // Create a custom chat message with roll data
         const chatData = {
             content: HTMLstring,
+            blind: isBlindRoll,
             speaker: ChatMessage.getSpeaker({ actor: game.user.character }),
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
             roll: roll,
