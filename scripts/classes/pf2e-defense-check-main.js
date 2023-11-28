@@ -59,6 +59,14 @@ class CustomPlayerBonus {
     getSignedBonusType(){
         return this.BonusTypeSigned
     }
+
+    getBonusName(){
+        if(this.isBonusOverridden){
+            return this.OverrideBonus.BonusName;
+        }else{
+            return this.DefaultBonus.BonusName;
+        }
+    }
 }
 
 // Main displau form. This form needs to retriev the data, calc, Allow adjustments from user
@@ -80,7 +88,9 @@ class DefendCheckForm extends FormApplication {
         totalDefendBonus: 0, /* INT */
         rollType: 0,         /* ROLL TYPE */
         rollFormula: '',
-        bonusNames: []
+        numAppliedBonuses: 0,
+        appliedBonusNames: [14],
+        appliedBonusValues: [14]
     };
 
     constructor(passedInActorID){
@@ -235,12 +245,22 @@ class DefendCheckForm extends FormApplication {
         let tempCirc=0;
         let tempUntyped=0;
 
+        this.formData.numAppliedBonuses = 0;
+        this.formData.appliedBonusNames.fill('');
+        this.formData.appliedBonusValues.fill(0);
+        
+
         for (let i=0; i<DEFFEND_CHECK_GLOBALS.NUM_BONUS_TYPES_SIGNED; i++)
         {
             if(this.formData.playerBonuses_Ary[i].isBonusApplied){
 
                 let tempBonusValue = this.formData.playerBonuses_Ary[i].getBonusValue();
                 let tempBonusType = this.formData.playerBonuses_Ary[i].getSignedBonusType();
+                let tempBonusName = this.formData.playerBonuses_Ary[i].getBonusName();
+
+                this.formData.appliedBonusNames[this.formData.numAppliedBonuses]=   tempBonusName;
+                this.formData.appliedBonusValues[this.formData.numAppliedBonuses]=  tempBonusValue;
+                this.formData.numAppliedBonuses++;
 
                 switch(tempBonusType){
                     case DEFFEND_CHECK_GLOBALS.BONUS_TYPES_SIGNED.ATTRIBUTE_POS:
@@ -277,14 +297,6 @@ class DefendCheckForm extends FormApplication {
 
         /* Calc total bonus */
         let calcDefendBonus = tempAtt+tempProf+tempPoten+tempItem+tempStatus+tempCirc+tempUntyped;
-        rollFormula =   String(tempAtt)+'+'+
-                        String(tempProf)+'+'+
-                        String(tempPoten)+'+'+
-                        String(tempItem)+'+'+
-                        String(tempStatus)+'+'+
-                        String(tempCirc)+'+'+
-                        String(tempUntyped);
-
         this.formData.totalDefendBonus = calcDefendBonus;
     }
 
@@ -466,11 +478,36 @@ class DefendCheckForm extends FormApplication {
         const rollFormula = '1d20+'+String(this.formData.totalDefendBonus);
         const roll = await new Roll(rollFormula).roll();
 
+        //Create Roll Modifyer Text
+        let modString='';
+        for(let i=0; i<this.formData.numAppliedBonuses; i++)
+        {
+            modString = modString+this.formData.appliedBonusNames[i]+':'+this.formData.appliedBonusValues[i]+' | ';
+        }
+
+        let offBy = this.formData.targetsAttackDC-roll.total;
+        let outcomeString = '';
+        if(offBy > 9){
+            //crit save (crit miss)
+
+        }else if(offBy < -9){
+            //crit hit (You gonna take dmg)
+
+        }else if(offBy >=0){
+            //Miss
+
+        }else{
+            //Hit
+
+        }
+
+
         // Create a custom chat message with roll data
         const chatData = {
             content: `
             <div class="custom-miss">
                 <p>This is a custom chat message with a roll:</p>
+                <p>${modString}</p>
                 <p>Roll Formula: ${rollFormula}</p>
                 <p>Roll Result: ${roll.dice[0].total}<p>
                 <p>Total: ${roll.total}</p>
