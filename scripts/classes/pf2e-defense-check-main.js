@@ -442,11 +442,23 @@ class DefendCheckForm extends FormApplication {
     }
 
     async _handleRollButton(event){
-        //create and display message
+        // create and display message
         // This is untested and un verifed,
         // Want to make roll data that shows how much the player hit or missed by
             // TODO
             const customCSS = `
+            .df-hit-by {
+                background-color: #ffcc00;
+            }
+            .df-miss-by {
+                background-color: #ffcc00;
+            }
+            .df-crit-save-die {
+                background-color: #ffcc00;
+            }
+            .df-crit-fail-die {
+                background-color: #ffcc00;
+            }
             .custom-hit-by {
                 background-color: #ffcc00;
                 border: 2px solid #ff9900;
@@ -461,7 +473,6 @@ class DefendCheckForm extends FormApplication {
                 border-radius: 5px;
                 font-weight: bold;
             }
-
             .custom-modifier {
                 background-color: grey;
                 font-size: 5px;
@@ -478,43 +489,17 @@ class DefendCheckForm extends FormApplication {
         const rollFormula = '1d20+'+String(this.formData.totalDefendBonus);
         const roll = await new Roll(rollFormula).roll();
 
-        //Create Roll Modifyer Text
-        let modString='';
-        for(let i=0; i<this.formData.numAppliedBonuses; i++)
-        {
-            modString = modString+this.formData.appliedBonusNames[i]+':'+this.formData.appliedBonusValues[i]+' | ';
-        }
+        //Create HTML for chat message
+        let modifiersString = DF_CHECK_MESSAGE_HELPERS.createModifiersString(this.formData.appliedBonusNames, this.formData.appliedBonusValues, this.formData.numAppliedBonuses);
 
-        let offBy = this.formData.targetsAttackDC-roll.total;
-        let outcomeString = '';
-        if(offBy > 9){
-            //crit save (crit miss)
+        let offBy = this.formData.targetsAttackDC-roll.total;        
+        let outcomeString = DF_CHECK_MESSAGE_HELPERS.createOutcomeString(offBy);
 
-        }else if(offBy < -9){
-            //crit hit (You gonna take dmg)
-
-        }else if(offBy >=0){
-            //Miss
-
-        }else{
-            //Hit
-
-        }
-
+        let HTMLstring = DF_CHECK_MESSAGE_HELPERS.createHTMLstring(this.formData, rollFormula, roll.dice[0].total, roll.total, modifiersString, outcomeString);
 
         // Create a custom chat message with roll data
         const chatData = {
-            content: `
-            <div class="custom-miss">
-                <p>This is a custom chat message with a roll:</p>
-                <p>${modString}</p>
-                <p>Roll Formula: ${rollFormula}</p>
-                <p>Roll Result: ${roll.dice[0].total}<p>
-                <p>Total: ${roll.total}</p>
-                <p>/r 1d20</p>
-                ${game.user.isGM ? '<p>GM Only: This sentence is visible only to the GM.</p>' : ''}
-            </div>
-            `,
+            content: HTMLstring,
             speaker: ChatMessage.getSpeaker({ actor: game.user.character }),
             type: CONST.CHAT_MESSAGE_TYPES.ROLL,
             roll: roll,

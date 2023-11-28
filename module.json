@@ -14,6 +14,7 @@
   "scripts": [
     "scripts/classes/globals.js",
     "scripts/classes/handlebars-helpers.js",
+    "scripts/classes/chat-message-helpers.js",
     "scripts/classes/hooks.js",
     "scripts/classes/pf2e-defense-check-main.js"
   ],
