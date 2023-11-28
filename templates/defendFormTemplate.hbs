@@ -252,15 +252,15 @@
     <!-- Adjust Roll Type -->
     <div class="roll-mode-panel">
         <span class="label">Roll Mode</span>
-        <select name="rollmode">
-                    <option value="publicroll" selected="">Public Roll</option>
-                    <option value="gmroll">Private GM Roll</option>
-                    <option value="blindroll">Blind GM Roll</option>
-                    <option value="selfroll">Self Roll</option>
+        <select name="rollmode" id="df-mod-roll-type-dropdown">
+                    <option value="0" selected="">Public Roll</option>
+                    <option value="1">Private GM Roll</option>
+                    <option value="2">Blind GM Roll</option>
+                    <option value="3">Self Roll</option>
         </select>
     </div>
     <hr>
 
     <!-- Roll Defense Check Button -->
-    <button type="button" class="roll">Roll ({{{defend_form_getBonusTotal totalDefendBonus}}})</button>
+    <button type="button" class="roll" id="df-mod-roll-button">Roll ({{{defend_form_getBonusTotal totalDefendBonus}}})</button>
 </form>

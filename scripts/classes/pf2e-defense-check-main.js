@@ -490,19 +490,9 @@ class DefendCheckForm extends FormApplication {
         //Attack DC inputs
         html.on('input',    "#df-mod-defence-check-dc-input", this._handleDefenceCheckDCInput.bind(this));
 
-        /*
-        //Checkbox on selections
-        html.on('click',    "#df-mod-use-override-checkbox", this._handleOverrideCheckbox.bind(this));    //Override Checkbox (Use override value)
-    
-        //override inputs "#df-mod-override-descrip-text-input"
-        html.on('input',    "#df-mod-override-descrip-text-input",  this._handleNewOverrideBonusTypeText.bind(this));          //Input Text (Name of bonus)
-        html.on('change',   "#df-mod-override-bonus-type-dropdown", this._handleNewOverrideBonusTypeDropdown.bind(this));      //Selection input (Drop down)
-        html.on('input',    "#df-mod-override-value-num-input",     this._handleNewOverrideBonusTypeValueInput.bind(this));    //Input number (New Bonus Value)
-        html.on('click',    "#df-mod-override-confirm-button",      this._handleNewOverrideBonusTypeConfirmButton.bind(this)); //Add value (Confirmation input)
-
-        //Attack DC inputs
-        html.on('input',    "#df-mod-defence-check-dc-input", this._handleDefenceCheckDCInput.bind(this));
-        */
+        //Roll inputs
+        html.on('change',   "#df-mod-roll-type-dropdown",    this._handleRollTypedropdown.bind(this));
+        html.on('click',    "#df-mod-roll-button",           this._handleRollButton.bind(this));
     }
 
     /*

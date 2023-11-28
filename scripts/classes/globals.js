@@ -2,6 +2,14 @@ class DEFFEND_CHECK_GLOBALS {
     
     static DEFNSE_CHECK_TEMPLATE = 'modules/pf2e-defense-check/templates/defendFormTemplate.hbs';
 
+    static NUMBER_ROLL_TYPES = 4;
+    static ROLL_TYPES = {
+        PUBLIC_ROLL:        0,
+        PRIVATE_GM_ROLL:    1,
+        BLIND_GM_ROLL:      2,
+        SELF_ROLL:          3
+    };
+
     static NUM_BONUS_TYPES_SIGNED = 14;
     static BONUS_TYPES_SIGNED = {
         ATTRIBUTE_POS:      0,
