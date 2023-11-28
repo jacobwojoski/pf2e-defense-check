@@ -1,5 +1,95 @@
 DEFFENDER_FORM_OBJ = null;
 
+class DF_CHECK_MESSAGE_HELPERS {
+    static createModifiersString(bonusNames_ary, bonusValues_ary, numBonusesApplied_int)
+    {
+        //What mod text should look like
+        //<span class="tag tag_transparent">Constitution +2</span>
+        //<span class="tag tag_transparent">Expert +11</span>
+    
+        //Create Roll Modifyer Text
+        let modString='';
+        let valueString = '';
+        for(let i=0; i<numBonusesApplied_int; i++)
+        {
+            valueString = '';
+            if(bonusValues_ary[i]>=0){
+                valueString = " +"+String(bonusValues_ary[i])+" ";
+            }else{
+                valueString = " "+String(bonusValues_ary[i])+" ";
+            }
+            modString = modString + '<span class="tag tag_transparent">'+String(bonusNames_ary[i])+valueString+'</span>';
+        }
+        return modString;
+    }
+    
+    static createOutcomeString(offBy)
+    {
+        //offBy = (DC - check)
+        // neg offby = Check Bigger
+        let outcomeString = '';
+        if(offBy > 9){
+            //crit save (crit miss)
+            outcomeString = '<p class="df-hit-by">Crittically Hit: +'+String(offBy)+'</p>';
+        }else if(offBy < -9){
+            //crit hit (You gonna take dmg)
+            outcomeString = '<p class="df-miss-by">Critialy Saved: '+String(offBy)+'</p>';
+    
+        }else if(offBy >=0){
+            //Hit
+            outcomeString = '<p class="df-hit-by">Hit: +'+String(offBy)+'</p>';
+        }else{
+            //Miss
+            outcomeString = '<p class="df-miss-by">Miss: '+String(offBy)+'</p>';
+        }
+        return outcomeString;
+    }
+    
+    static createHTMLstring(rollFormula, dieResult, totalResult, modifiersString, outcomeString,dc)
+    {
+        let part1 = `
+            <div class="message-content">
+                <span class="flavor-text">
+                    <h4 class="action"><strong>Defence Saving Throw</strong></h4>
+                    <div class="tags traits"></div>
+                    <hr>
+                    <div class="tags modifiers">
+        `
+        //max and success add color
+        let part2 = `
+            </div>
+                </span>
+                <div class="dice-roll saving-throw">
+                    <div class="dice-result">
+                        <div class="dice-formula">${rollFormula}</div>
+                            <div class="dice-tooltip">
+                                <section class="tooltip-part">
+                                    <div class="dice">
+                                        <header class="part-header flexrow">
+                                            <span class="part-formula">1d20</span>
+                                            <span class="part-total">${totalResult}</span>
+                                        </header>
+                                        <ol class="dice-rolls">
+                                            <li class="roll die d20 max">${dieResult}</li>
+                                        </ol>
+                                    </div>
+                                </section>
+                            </div>
+                            <h4 class="dice-total success">${totalResult}</h4>
+                            <hr>
+                            <span class="tag tag_transparent">DC: ${dc} | ${outcomeString}</span>
+                            <hr>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        `
+    
+        let completeHTML = part1 + modifiersString + part2;
+        return completeHTML;
+    }
+}
+
 // Class that holds all modifier info. 
 class CustomBonusClass {
     BonusName =         "";     /* STRING */
@@ -448,10 +538,10 @@ class DefendCheckForm extends FormApplication {
             // TODO
             const customCSS = `
             .df-hit-by {
-                background-color: #ffcc00;
+                background-color: 'green';
             }
             .df-miss-by {
-                background-color: #ffcc00;
+                background-color: 'red';
             }
             .df-crit-save-die {
                 background-color: #ffcc00;
@@ -495,7 +585,7 @@ class DefendCheckForm extends FormApplication {
         let offBy = this.formData.targetsAttackDC-roll.total;        
         let outcomeString = DF_CHECK_MESSAGE_HELPERS.createOutcomeString(offBy);
 
-        let HTMLstring = DF_CHECK_MESSAGE_HELPERS.createHTMLstring(this.formData, rollFormula, roll.dice[0].total, roll.total, modifiersString, outcomeString);
+        let HTMLstring = DF_CHECK_MESSAGE_HELPERS.createHTMLstring(rollFormula, roll.dice[0].total, roll.total, modifiersString, outcomeString, this.formData.targetsAttackDC);
 
         // Create a custom chat message with roll data
         const chatData = {
