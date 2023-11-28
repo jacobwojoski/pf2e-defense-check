@@ -94,6 +94,8 @@ class DefendCheckForm extends FormApplication {
     static get defaultOptions(){
         return mergeObject(super.defaultOptions, {
             popOut: true,
+            resizable: true,
+            hight: 'auto',
             template: DEFFEND_CHECK_GLOBALS.DEFNSE_CHECK_TEMPLATE,
             id: 'deffend-form-id',
             title: 'Deffend Form',
