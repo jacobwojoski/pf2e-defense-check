@@ -1,6 +1,13 @@
 DEFFENDER_FORM_OBJ = null;
 
 class DF_CHECK_MESSAGE_HELPERS {
+    static DEGREE_SUCCESS = {
+        CRIT_FAIL: 0,
+        FAIL: 1,
+        SUCCESS: 2,
+        CRIT_SUCCESS: 3
+    }
+
     static createModifiersString(bonusNames_ary, bonusValues_ary, numBonusesApplied_int)
     {
         //What mod text should look like
@@ -29,24 +36,52 @@ class DF_CHECK_MESSAGE_HELPERS {
         // neg offby = Check Bigger
         let outcomeString = '';
         if(offBy > 9){
-            //crit save (crit miss)
-            outcomeString = '<p class="df-hit-by">Crittically Missed: +'+String(offBy)+'</p>';
+            //Target Crit Missed You
+            outcomeString = '<p class="df-hit-by">They Crittically Missed You: +'+String(offBy)+'</p>';
         }else if(offBy < -9){
-            //crit hit (You gonna take dmg)
-            outcomeString = '<p class="df-miss-by">Critialy Hit: '+String(offBy)+'</p>';
-    
+            //Target Crit Hit You
+            outcomeString = '<p class="df-miss-by">They Critialy Hit You: '+String(offBy)+'</p>';
         }else if(offBy >=0){
-            //Hit
-            outcomeString = '<p class="df-hit-by">Miss: +'+String(offBy)+'</p>';
+            //Target Missed You
+            outcomeString = '<p class="df-hit-by">They Missed You: +'+String(offBy)+'</p>';
         }else{
-            //Miss
-            outcomeString = '<p class="df-miss-by">Hit: '+String(offBy)+'</p>';
+            //Target Hit You
+            outcomeString = '<p class="df-miss-by">They Hit You: '+String(offBy)+'</p>';
         }
         return outcomeString;
     }
     
-    static createHTMLstring(rollFormula, dieResult, totalResult, modifiersString, outcomeString,dc)
+    static getDegreeSuccess(offBy, dieRoll)
     {
+        if(offBy > 9 || dieRoll == 20){
+            //crit save (crit miss)
+            return this.DEGREE_SUCCESS.CRIT_SUCCESS;
+        }else if(offBy < -9 || dieRoll == 1){
+            //crit hit (You gonna take dmg)
+           return this.DEGREE_SUCCESS.CRIT_FAIL;
+        }else if(offBy >=0){
+            //Miss
+           return this.DEGREE_SUCCESS.SUCCESS;
+        }else{
+            //MHit
+            return this.DEGREE_SUCCESS.FAIL;
+        }
+    }
+
+    static createHTMLstring(rollFormula, dieResult, totalResult, modifiersString, outcomeString,dc,degSuc)
+    {
+        let rollDieMaxMin = '';
+        let diceTotalSuccessFail = '';
+        //max and success : add green
+        //min and failure : add red
+        if(degSuc == this.DEGREE_SUCCESS.CRIT_FAIL){
+            rollDieMaxMin= 'min ';
+            diceTotalSuccessFail='failure ';
+        }else if(degSuc == this.DEGREE_SUCCESS.CRIT_SUCCESS){
+            rollDieMaxMin= 'max ';
+            diceTotalSuccessFail='success ';
+        }
+
         let part1 = `
             <div class="message-content">
                 <span class="flavor-text">
@@ -71,12 +106,12 @@ class DF_CHECK_MESSAGE_HELPERS {
                                             <span class="part-total">${totalResult}</span>
                                         </header>
                                         <ol class="dice-rolls">
-                                            <li class="roll die d20 max">${dieResult}</li>
+                                            <li class="roll die d20 ${rollDieMaxMin}">${dieResult}</li>
                                         </ol>
                                     </div>
                                 </section>
                             </div>
-                            <h4 class="dice-total success">${totalResult}</h4>
+                            <h4 class="dice-total ${diceTotalSuccessFail}">${totalResult}</h4>
                             <hr>
                             <span class="tag tag_transparent">DC: ${dc} | ${outcomeString}</span>
                             <hr>
@@ -85,7 +120,7 @@ class DF_CHECK_MESSAGE_HELPERS {
                 </div>
             </div>
         `
-    
+        
         let completeHTML = part1 + modifiersString + part2;
         return completeHTML;
     }
@@ -585,8 +620,12 @@ class DefendCheckForm extends FormApplication {
 
         let offBy = roll.total - this.formData.targetsAttackDC;        
         let outcomeString = DF_CHECK_MESSAGE_HELPERS.createOutcomeString(offBy);
+        let degSuccess = DF_CHECK_MESSAGE_HELPERS.getDegreeSuccess(offBy, roll.dice[0].total);
 
-        let HTMLstring = DF_CHECK_MESSAGE_HELPERS.createHTMLstring(rollFormula, roll.dice[0].total, roll.total, modifiersString, outcomeString, this.formData.targetsAttackDC);
+        let HTMLstring = DF_CHECK_MESSAGE_HELPERS.createHTMLstring(rollFormula, roll.dice[0].total, 
+                                                                    roll.total, modifiersString, 
+                                                                    outcomeString, this.formData.targetsAttackDC, 
+                                                                    degSuccess);
 
         // Create a custom chat message with roll data
         const chatData = {
