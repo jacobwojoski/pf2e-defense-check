@@ -451,9 +451,9 @@ class DefendCheckForm extends FormApplication {
     // ==================================================
     // ================== ROLL SELECTIONS ===============
     // ==================================================
-    async _handleRollTypedropdown(Event){
-        //Handle selections of blind roll, gm roll, self roll, public roll
-            //TODO
+    async _handleRollTypedropdown(event){
+        const newRollType = event.target.value;
+        this.formData.rollType = newRollType;
     }
 
     async _handleRollButton(event){
