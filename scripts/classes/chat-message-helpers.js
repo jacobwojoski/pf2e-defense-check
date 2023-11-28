@@ -3,13 +3,13 @@ class DF_CHECK_MESSAGE_HELPERS {
     static createModifiersString(bonusNames_ary, bonusValues_ary, numBonusesApplied_int)
     {
         //What mod text should look like
-    //            <span class="tag tag_transparent">Constitution +2</span>
-    //            <span class="tag tag_transparent">Expert +11</span>
+        //<span class="tag tag_transparent">Constitution +2</span>
+        //<span class="tag tag_transparent">Expert +11</span>
     
         //Create Roll Modifyer Text
         let modString='';
         let valueString = '';
-        for(let i=0; i<this.formData.numAppliedBonuses; i++)
+        for(let i=0; i<numBonusesApplied_int; i++)
         {
             valueString = '';
             if(bonusValues_ary[i]>=0){
