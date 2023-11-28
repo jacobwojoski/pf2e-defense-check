@@ -25,22 +25,22 @@ class DF_CHECK_MESSAGE_HELPERS {
     
     static createOutcomeString(offBy)
     {
-        //offBy = (DC - check)
+        //offBy = (check - DC)
         // neg offby = Check Bigger
         let outcomeString = '';
         if(offBy > 9){
             //crit save (crit miss)
-            outcomeString = '<p class="df-hit-by">Crittically Hit: +'+String(offBy)+'</p>';
+            outcomeString = '<p class="df-hit-by">Crittically Missed: +'+String(offBy)+'</p>';
         }else if(offBy < -9){
             //crit hit (You gonna take dmg)
-            outcomeString = '<p class="df-miss-by">Critialy Saved: '+String(offBy)+'</p>';
+            outcomeString = '<p class="df-miss-by">Critialy Hit: '+String(offBy)+'</p>';
     
         }else if(offBy >=0){
             //Hit
-            outcomeString = '<p class="df-hit-by">Hit: +'+String(offBy)+'</p>';
+            outcomeString = '<p class="df-hit-by">Miss: +'+String(offBy)+'</p>';
         }else{
             //Miss
-            outcomeString = '<p class="df-miss-by">Miss: '+String(offBy)+'</p>';
+            outcomeString = '<p class="df-miss-by">Hit: '+String(offBy)+'</p>';
         }
         return outcomeString;
     }
@@ -55,7 +55,8 @@ class DF_CHECK_MESSAGE_HELPERS {
                     <hr>
                     <div class="tags modifiers">
         `
-        //max and success add color
+        //max and success : add green
+        //min and failure : add red
         let part2 = `
             </div>
                 </span>
@@ -582,7 +583,7 @@ class DefendCheckForm extends FormApplication {
         //Create HTML for chat message
         let modifiersString = DF_CHECK_MESSAGE_HELPERS.createModifiersString(this.formData.appliedBonusNames, this.formData.appliedBonusValues, this.formData.numAppliedBonuses);
 
-        let offBy = this.formData.targetsAttackDC-roll.total;        
+        let offBy = roll.total - this.formData.targetsAttackDC;        
         let outcomeString = DF_CHECK_MESSAGE_HELPERS.createOutcomeString(offBy);
 
         let HTMLstring = DF_CHECK_MESSAGE_HELPERS.createHTMLstring(rollFormula, roll.dice[0].total, roll.total, modifiersString, outcomeString, this.formData.targetsAttackDC);
