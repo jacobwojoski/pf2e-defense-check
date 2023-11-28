@@ -448,16 +448,8 @@ class DefendCheckForm extends FormApplication {
         this.formData.targetsAttackDC = targetsAttackDCValue;
     }
 
-    // ==================================================
-    // ================== ROLL SELECTIONS ===============
-    // ==================================================
-    async _handleRollTypedropdown(event){
-        const newRollType = event.target.value;
-        this.formData.rollType = newRollType;
-    }
-
-    async _handleRollButton(event){
-        //ASK GM for check value?
+    async _getDCfromGM(event){
+         //ASK GM for check value?
             //TODO
                 //set bool notRec
                 //Socket -> request GM VALUE
@@ -466,7 +458,18 @@ class DefendCheckForm extends FormApplication {
                 // update bool Var Rec
                 // get var from flag
                 // use var for DC
+    }
 
+    // ==================================================
+    // ================== ROLL SELECTIONS ===============
+    // ==================================================
+    
+    async _handleRollTypedropdown(event){
+        const newRollType = event.target.value;
+        this.formData.rollType = newRollType;
+    }
+
+    async _handleRollButton(event){
         //create and display message
         this.createRollMessage();
     }
