@@ -33,10 +33,9 @@ Hooks.on('renderActorSheet', (app, html, options) => {
     let customRollDefenseButton = `<button type="button" data-action='${actorID}' value='${isOwner}' title='${tooltip}' id="defense_roll_check_module_btn" class="defense-button"><i class="defense-button-icon fas fa-dice-d20"></i></button>`;
     
     // Convert the button html to an actual object
-    // Create a new DOMParser
-    var parser = new DOMParser();
 
     // Parse the Button HTML string
+    var parser = new DOMParser();
     var parsedHtml = parser.parseFromString(customRollDefenseButton, 'text/html');
 
     // Get the first element from the parsed HTML
@@ -60,8 +59,7 @@ Hooks.on('renderActorSheet', (app, html, options) => {
             if(isOwner){
                 //We own the charcter so allow defense roll to occour
                 DEFFENDER_FORM_OBJ = new DefendCheckForm(event.currentTarget.attributes[1].value).render(true);
-                
             }          
-        });
-    }
+    }); // End click callback
+
 });
