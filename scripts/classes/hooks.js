@@ -57,10 +57,11 @@ Hooks.on('renderActorSheet', (app, html, options) => {
             isOwner=true;
         }
 
-        if(isOwner){
-            //We own the charcter so allow defense roll to occour
-            DEFFENDER_FORM_OBJ = new DefendCheckForm(event.currentTarget.attributes[1].value).render(true);
-            //DEFFENDER_FORM_OBJ.render(true);
-        }          
-    });
+            if(isOwner){
+                //We own the charcter so allow defense roll to occour
+                DEFFENDER_FORM_OBJ = new DefendCheckForm(event.currentTarget.attributes[1].value).render(true);
+                
+            }          
+        });
+    }
 });
