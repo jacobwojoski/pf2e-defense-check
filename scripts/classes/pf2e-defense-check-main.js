@@ -13,6 +13,7 @@ class DF_CHECK_MESSAGE_HELPERS {
         //What mod text should look like
         //<span class="tag tag_transparent">Constitution +2</span>
         //<span class="tag tag_transparent">Expert +11</span>
+        //<span class="tag tag_transparent">Fatigued -2</span>
     
         //Create Roll Modifyer Text
         let modString='';
