@@ -72,14 +72,18 @@ class DF_CHECK_MESSAGE_HELPERS {
     {
         let rollDieMaxMin = '';
         let diceTotalSuccessFail = '';
-        //max and success : add green
-        //min and failure : add red
-        if(degSuc == this.DEGREE_SUCCESS.CRIT_FAIL){
-            rollDieMaxMin= 'min ';
-            diceTotalSuccessFail='failure ';
-        }else if(degSuc == this.DEGREE_SUCCESS.CRIT_SUCCESS){
-            rollDieMaxMin= 'max ';
-            diceTotalSuccessFail='success ';
+        
+        // max and success : add green if rolled a 20 or Crit Due to +10
+        // min and failure : add red if rolled a 1 or Crit failed to -10
+        // Only add color if player input a DC! 
+        if(dc !=0 ){
+            if(degSuc == this.DEGREE_SUCCESS.CRIT_FAIL){
+                rollDieMaxMin= 'min ';
+                diceTotalSuccessFail='failure ';
+            }else if(degSuc == this.DEGREE_SUCCESS.CRIT_SUCCESS){
+                rollDieMaxMin= 'max ';
+                diceTotalSuccessFail='success ';
+            }
         }
 
         let part1 = `
@@ -90,9 +94,9 @@ class DF_CHECK_MESSAGE_HELPERS {
                     <hr>
                     <div class="tags modifiers">
         `
-        //max and success : add green
-        //min and failure : add red
-        let part2 = `
+        // part 2 is the mod string created somewhere else
+
+        let part3 = `
             </div>
                 </span>
                 <div class="dice-roll saving-throw">
@@ -121,7 +125,7 @@ class DF_CHECK_MESSAGE_HELPERS {
             </div>
         `
         
-        let completeHTML = part1 + modifiersString + part2;
+        let completeHTML = part1 + modifiersString + part3;
         return completeHTML;
     }
 }
@@ -376,6 +380,7 @@ class DefendCheckForm extends FormApplication {
         this.formData.appliedBonusValues.fill(0);
         
 
+        // catagorize each bonus
         for (let i=0; i<DEFFEND_CHECK_GLOBALS.NUM_BONUS_TYPES_SIGNED; i++)
         {
             if(this.formData.playerBonuses_Ary[i].isBonusApplied){

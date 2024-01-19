@@ -23,7 +23,16 @@ Handlebars.registerHelper('defend_form_get_bonus_value', function (playerBonusIn
     }else{
         retVal = playerBonusInfo.DefaultBonus.BonusValue;
     }
-    return String(retVal);
+
+    // add + to the string for Ppositive numbers
+    let retString = '';
+    if(retVal > 0){
+        retString = '+'+String(retVal);
+    }else{
+        retString = String(retVal);
+    }
+    
+    return retString;
 });
 
 //Handlebars helper used to display check on or off on the checkboxes
