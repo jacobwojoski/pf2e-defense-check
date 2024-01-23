@@ -37,10 +37,10 @@ class DF_CHECK_MESSAGE_HELPERS {
         let outcomeString = '';
         if(offBy > 9){
             //Target Crit Missed You
-            outcomeString = '<p class="df-hit-by">They Crittically Missed You: +'+String(offBy)+'</p>';
+            outcomeString = '<p class="df-hit-by">They <b>Crittically Missed</b> You: +'+String(offBy)+'</p>';
         }else if(offBy < -9){
             //Target Crit Hit You
-            outcomeString = '<p class="df-miss-by">They Critialy Hit You: '+String(offBy)+'</p>';
+            outcomeString = '<p class="df-miss-by">They <b>Critialy Hit</b> You: '+String(offBy)+'</p>';
         }else if(offBy >=0){
             //Target Missed You
             outcomeString = '<p class="df-hit-by">They Missed You: +'+String(offBy)+'</p>';
@@ -72,6 +72,7 @@ class DF_CHECK_MESSAGE_HELPERS {
     {
         let rollDieMaxMin = '';
         let diceTotalSuccessFail = '';
+        let outcomeStringCss = '';
         
         // max and success : add green if rolled a 20 or Crit Due to +10
         // min and failure : add red if rolled a 1 or Crit failed to -10
@@ -80,9 +81,11 @@ class DF_CHECK_MESSAGE_HELPERS {
             if(degSuc == this.DEGREE_SUCCESS.CRIT_FAIL){
                 rollDieMaxMin= 'min ';
                 diceTotalSuccessFail='failure ';
+                outcomeStringCss='cf_text';
             }else if(degSuc == this.DEGREE_SUCCESS.CRIT_SUCCESS){
                 rollDieMaxMin= 'max ';
                 diceTotalSuccessFail='success ';
+                outcomeStringCss='cs_text';
             }
         }
 
@@ -117,7 +120,12 @@ class DF_CHECK_MESSAGE_HELPERS {
                             </div>
                             <h4 class="dice-total ${diceTotalSuccessFail}">${totalResult}</h4>
                             <hr>
-                            <span class="tag tag_transparent">DC: ${dc} | ${outcomeString}</span>
+                            <div>
+                                <p class="dc_center">Targets Attack DC: ${dc}</p>
+                            </div>
+                            <div>
+                                ${outcomeString}
+                            </div>
                             <hr>
                         </div>  
                     </div>
@@ -239,8 +247,8 @@ class DefendCheckForm extends FormApplication {
             resizable: true,
             hight: 'auto',
             template: DEFFEND_CHECK_GLOBALS.DEFNSE_CHECK_TEMPLATE,
-            id: 'deffend-form-id',
-            title: 'Deffend Form',
+            id: 'defend-form-id',
+            title: 'Defend Form',
         });
     }
 
@@ -573,16 +581,15 @@ class DefendCheckForm extends FormApplication {
     }
 
     async _handleRollButton(event){
-        // create and display message
-        // This is untested and un verifed,
-        // Want to make roll data that shows how much the player hit or missed by
-            // TODO
+            //background-color: green;
             const customCSS = `
             .df-hit-by {
-                background-color: 'green';
+                text-align: center;
+                color: green;
             }
             .df-miss-by {
-                background-color: 'red';
+                text-align: center;
+                color: red;
             }
             .df-crit-save-die {
                 background-color: #ffcc00;
@@ -608,6 +615,9 @@ class DefendCheckForm extends FormApplication {
                 background-color: grey;
                 font-size: 5px;
                 border-size: 2px;
+            }
+            .dc_center {
+                text-align: center;
             }
         `;
 
