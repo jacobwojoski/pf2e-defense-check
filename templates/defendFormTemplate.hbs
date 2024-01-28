@@ -255,24 +255,30 @@
     <!-- Adjuster for Attack Type {Melee, Ranged, Spell} -->
     <div>
         <h3>ATTACK TYPE</h3>
-        <input type="radio" id="melee-atk-radio" name="atk-type" value="NO_MAP">
+        <input type="radio" id="melee-atk-radio" name="atk-type" value="0">
             <label for="no-map-radio">Melee Atack</label>
-        <input type="radio" id="ranged-atk-radio" name="atk-type" value="MAP_NEG_5">
+        <input type="radio" id="ranged-atk-radio" name="atk-type" value="1">
             <label for="no-map-radio">MAP -5</label>
-        <input type="radio" id="spell-atk-radio" name="atk-type" value="MAP_NEG_10">
+        <input type="radio" id="spell-atk-radio" name="atk-type" value="2">
             <label for="no-map-radio">MAP -10</label>
     </div>
     <br>
-    
+
     <!-- Adjuster for MAP {No Map, MAP -5, MAP -10}-->
     <div>
         <h3>MAP ATTACK VALUE</h3>
-        <input type="radio" id="no-map-radio" name="map-value" value="NO_MAP">
+        <input type="radio" id="no-map-radio" name="map-value" value="0">
             <label for="no-map-radio">No MAP</label>
-        <input type="radio" id="neg-five-radio" name="map-value" value="MAP_NEG_5">
+        <input type="radio" id="neg-five-radio" name="map-value" value="1">
             <label for="neg-five-radio">MAP -5</label>
-        <input type="radio" id="neg-10-radio" name="map-value" value="MAP_NEG_10">
+        <input type="radio" id="neg-10-radio" name="map-value" value="2">
             <label for="neg-10-radio">MAP -10</label>
+    </div>
+
+    <!-- Calculate and disply targets attack DC bassed off inputs above -->
+    <div>
+        <button type="button" class="roll" id="df-mod-roll-button">Get Targets Attack DC</button>
+        <h3> WE FOUND TARGET DC OF: </h3>
     </div>
 
     <!-- Adjust Roll Type -->

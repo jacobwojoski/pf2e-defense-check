@@ -246,7 +246,8 @@ class DefendCheckForm extends FormApplication {
         actorID: "",                  /* STRING */
         playerBonuses_Ary:  [14],     /* [CustomPlayerBonus] */
         isBonusApplied_Ary: [14],     /* [Boolian] */
-        targetsAttackDC:    0,        /* INT */
+        targetsAttackDC:    0,        /* INT */ //Value we input
+        foundTargetsAttackDC:   0,    /* INT */ // <= 0 means we could not find the associated targets DC
         overrideInputValues: {
             bonusName:  "", /* STRING */
             bonusType:  5,  /* BONUS_TYPES (DEFAULT: CIRCUMSTANCE)*/
@@ -602,6 +603,51 @@ class DefendCheckForm extends FormApplication {
                 // use var for DC
     }
 
+    //
+    //  VALUES are [MELEE, RANGED, SPELL]
+    //                0  ,    1  ,   2
+    async _handleDefenceCheckAtkInput(event){
+        // get newly selected item
+        const newSelectedItem = event.target.value;
+
+        switch(newSelectedItem)
+        {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+        }
+
+        this.render();
+    }
+
+    // Handle the map attack radio button interactions
+    // VALUES are [NO_MAP, MAP_NEG_5, MAP_NEG_10]
+    //               0   ,     1    ,     2
+    async _handleDefenceCheckMapInput(event){
+        // get newly selected item
+        const newSelectedItem = event.target.value;
+
+        switch(newSelectedItem)
+        {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+        }
+
+        this.render();
+    }
+
+    // Handle the button press requesting the targets DC
+    async _handleGetTargetsDC(event){
+
+    }
+
     // ==================================================
     // ================== ROLL SELECTIONS ===============
     // ==================================================
@@ -720,6 +766,12 @@ class DefendCheckForm extends FormApplication {
 
         //Attack DC inputs
         html.on('input',    "#df-mod-defence-check-dc-input", this._handleDefenceCheckDCInput.bind(this));
+
+        //MAP Attack radio inputs
+        html.on('change',   "#df-mod-defense-check-map-radio", this._handleDefenceCheckMapInput.bind(this));
+
+        //Attack Type Radio inputs 
+        html.on('change',   "#df-mod-defense-check-atk-type-radio", this._handleDefenceCheckAtkInput.bind(this));
 
         //Roll inputs
         html.on('change',   "#df-mod-roll-type-dropdown",    this._handleRollTypedropdown.bind(this));
