@@ -252,6 +252,29 @@
         <p>Base Attack Bonus (BAB) | Multiple Attack Penalty (MAP)</p>
     </div>
 
+    <!-- Adjuster for Attack Type {Melee, Ranged, Spell} -->
+    <div>
+        <h3>ATTACK TYPE</h3>
+        <input type="radio" id="melee-atk-radio" name="atk-type" value="NO_MAP">
+            <label for="no-map-radio">Melee Atack</label>
+        <input type="radio" id="ranged-atk-radio" name="atk-type" value="MAP_NEG_5">
+            <label for="no-map-radio">MAP -5</label>
+        <input type="radio" id="spell-atk-radio" name="atk-type" value="MAP_NEG_10">
+            <label for="no-map-radio">MAP -10</label>
+    </div>
+    <br>
+    
+    <!-- Adjuster for MAP {No Map, MAP -5, MAP -10}-->
+    <div>
+        <h3>MAP ATTACK VALUE</h3>
+        <input type="radio" id="no-map-radio" name="map-value" value="NO_MAP">
+            <label for="no-map-radio">No MAP</label>
+        <input type="radio" id="neg-five-radio" name="map-value" value="MAP_NEG_5">
+            <label for="neg-five-radio">MAP -5</label>
+        <input type="radio" id="neg-10-radio" name="map-value" value="MAP_NEG_10">
+            <label for="neg-10-radio">MAP -10</label>
+    </div>
+
     <!-- Adjust Roll Type -->
     <hr>
     <div class="roll-mode-panel">
