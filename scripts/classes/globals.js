@@ -39,12 +39,14 @@ class DEFFEND_CHECK_GLOBALS {
         UNTYPED:        6
     };
 
-    static ROLL_TYPE = {
-        PUBLIC: 0,
-        GM:     1,
-        BLIND:  2,
-        SELF:   3
+    static NUM_ATTACK_TYPES = 3;
+    static ATTACK_TYPES = {
+        MELEE:      0,
+        RANGED:     1,
+        SPELL:      2
     };
+
+    
 
     static BONUS_TYPE_TO_NAMES = ["Attribute","Proficency","Potency","Item","Status","Circumstance","Untyped"];
     static BONUS_TYPE_SIGNED_TO_NAMES = ["Attribute","Attribute","Proficency","Proficency","Potency","Potency","Item","Item","Status","Status","Circumstance","Circumstance","Untyped","Untyped"];
