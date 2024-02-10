@@ -1,5 +1,8 @@
 {
     "PF2E_DEFENSE_CHECK" : {
-        
+        "chat_message":{
+        },
+        "popup_check":{
+        }
     }
 }

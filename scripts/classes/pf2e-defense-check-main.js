@@ -1,6 +1,9 @@
 DEFFENDER_FORM_OBJ = null;
 
 class DF_CHECK_MESSAGE_HELPERS {
+    /**
+     * The 4 Degrees od success that the result could have been
+     */
     static DEGREE_SUCCESS = {
         CRIT_FAIL: 0,
         FAIL: 1,
@@ -8,6 +11,13 @@ class DF_CHECK_MESSAGE_HELPERS {
         CRIT_SUCCESS: 3
     }
 
+    /**
+     * Create the HTML string that lists all the modifiers applied to our roll
+     * @param {String[]} bonusNames_ary - Array of Bonus names that were applied to the result
+     * @param {int[]} bonusValues_ary - Value of the bonuses that were applied to result
+     * @param {int} numBonusesApplied_int - Number of bonuses that were applied
+     * @returns {String} 
+     */
     static createModifiersString(bonusNames_ary, bonusValues_ary, numBonusesApplied_int)
     {
         //What mod text should look like
@@ -31,6 +41,11 @@ class DF_CHECK_MESSAGE_HELPERS {
         return modString;
     }
     
+    /**
+     * Create a string for the chat message that explains the result we got
+     * @param {int} offBy - How much we hit or missed by
+     * @returns 
+     */
     static createOutcomeString(offBy)
     {
         //offBy = (check - DC)
@@ -38,10 +53,10 @@ class DF_CHECK_MESSAGE_HELPERS {
         let outcomeString = '';
         if(offBy > 9){
             //Target Crit Missed You
-            outcomeString = '<p class="df-hit-by">They Crittically Missed You: +'+String(offBy)+'</p>';
+            outcomeString = '<p class="df-hit-by">They <b>Crittically Missed</b> You: +'+String(offBy)+'</p>';
         }else if(offBy < -9){
             //Target Crit Hit You
-            outcomeString = '<p class="df-miss-by">They Critialy Hit You: '+String(offBy)+'</p>';
+            outcomeString = '<p class="df-miss-by">They <b>Critialy Hit</b> You: '+String(offBy)+'</p>';
         }else if(offBy >=0){
             //Target Missed You
             outcomeString = '<p class="df-hit-by">They Missed You: +'+String(offBy)+'</p>';
@@ -52,6 +67,13 @@ class DF_CHECK_MESSAGE_HELPERS {
         return outcomeString;
     }
     
+    /**
+     * Get the degree of success given the die value and how much we missed by
+     * Crits Count as + 10 and - 10 or if We roll a 1 or 20
+     * @param {int} offBy - How much we missed or hit by
+     * @param {int} dieRoll - Value on the Die
+     * @returns {DEGREE_SUCCESS} - CF,F,S,CS
+     */
     static getDegreeSuccess(offBy, dieRoll)
     {
         if(offBy > 9 || dieRoll == 20){
@@ -69,18 +91,34 @@ class DF_CHECK_MESSAGE_HELPERS {
         }
     }
 
+    /**
+     * Create the HTML String thats the layout for the chat message
+     * NOTE: Message uses PF2E Specific CSS
+     * @param {String} rollFormula - Formula that needs to be in chat msg obj (1d20+X)
+     * @param {int} dieResult - Result of the Die roll, Value between 1 & 20
+     * @param {int} totalResult - Result of the Die Roll + Mod
+     * @param {String} modifiersString 
+     * @param {String} outcomeString - HTML String stating outcome of roll "Critical miss by -15"
+     * @param {int} dc - DC of the monster's attack (Value we want to beat) this is 0 if the user didn't input anything
+     * @param {DEGREE_SUCCESS} degSuc - Degree of success, CF,F,S,CS
+     * @returns 
+     */
     static createHTMLstring(rollFormula, dieResult, totalResult, modifiersString, outcomeString,dc,degSuc)
     {
         let rollDieMaxMin = '';
         let diceTotalSuccessFail = '';
-        //max and success : add green
-        //min and failure : add red
-        if(degSuc == this.DEGREE_SUCCESS.CRIT_FAIL){
-            rollDieMaxMin= 'min ';
-            diceTotalSuccessFail='failure ';
-        }else if(degSuc == this.DEGREE_SUCCESS.CRIT_SUCCESS){
-            rollDieMaxMin= 'max ';
-            diceTotalSuccessFail='success ';
+        
+        // max and success : add green if rolled a 20 or Crit Due to +10
+        // min and failure : add red if rolled a 1 or Crit failed to -10
+        // Only add color if player input a DC! 
+        if(dc !=0 ){
+            if(degSuc == this.DEGREE_SUCCESS.CRIT_FAIL){
+                rollDieMaxMin= 'min ';
+                diceTotalSuccessFail='failure ';
+            }else if(degSuc == this.DEGREE_SUCCESS.CRIT_SUCCESS){
+                rollDieMaxMin= 'max ';
+                diceTotalSuccessFail='success ';
+            }
         }
 
         let part1 = `
@@ -91,9 +129,9 @@ class DF_CHECK_MESSAGE_HELPERS {
                     <hr>
                     <div class="tags modifiers">
         `
-        //max and success : add green
-        //min and failure : add red
-        let part2 = `
+        // part 2 is the mod string created somewhere else
+
+        let part3 = `
             </div>
                 </span>
                 <div class="dice-roll saving-throw">
@@ -114,7 +152,12 @@ class DF_CHECK_MESSAGE_HELPERS {
                             </div>
                             <h4 class="dice-total ${diceTotalSuccessFail}">${totalResult}</h4>
                             <hr>
-                            <span class="tag tag_transparent">DC: ${dc} | ${outcomeString}</span>
+                            <div>
+                                <p class="dc_center">Targets Attack DC: ${dc}</p>
+                            </div>
+                            <div>
+                                ${outcomeString}
+                            </div>
                             <hr>
                         </div>  
                     </div>
@@ -122,7 +165,7 @@ class DF_CHECK_MESSAGE_HELPERS {
             </div>
         `
         
-        let completeHTML = part1 + modifiersString + part2;
+        let completeHTML = part1 + modifiersString + part3;
         return completeHTML;
     }
 }
@@ -236,8 +279,8 @@ class DefendCheckForm extends FormApplication {
             resizable: true,
             hight: 'auto',
             template: DEFFEND_CHECK_GLOBALS.DEFNSE_CHECK_TEMPLATE,
-            id: 'deffend-form-id',
-            title: 'Deffend Form',
+            id: 'defend-form-id',
+            title: 'Defend Form',
         });
     }
 
@@ -377,6 +420,7 @@ class DefendCheckForm extends FormApplication {
         this.formData.appliedBonusValues.fill(0);
         
 
+        // catagorize each bonus
         for (let i=0; i<DEFFEND_CHECK_GLOBALS.NUM_BONUS_TYPES_SIGNED; i++)
         {
             if(this.formData.playerBonuses_Ary[i].isBonusApplied){
@@ -569,16 +613,15 @@ class DefendCheckForm extends FormApplication {
     }
 
     async _handleRollButton(event){
-        // create and display message
-        // This is untested and un verifed,
-        // Want to make roll data that shows how much the player hit or missed by
-            // TODO
+            //background-color: green;
             const customCSS = `
             .df-hit-by {
-                background-color: 'green';
+                text-align: center;
+                color: green;
             }
             .df-miss-by {
-                background-color: 'red';
+                text-align: center;
+                color: red;
             }
             .df-crit-save-die {
                 background-color: #ffcc00;
@@ -604,6 +647,9 @@ class DefendCheckForm extends FormApplication {
                 background-color: grey;
                 font-size: 5px;
                 border-size: 2px;
+            }
+            .dc_center {
+                text-align: center;
             }
         `;
 
