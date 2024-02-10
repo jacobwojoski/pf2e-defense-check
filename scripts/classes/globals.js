@@ -49,7 +49,12 @@ class DEFFEND_CHECK_GLOBALS {
     static BONUS_TYPE_TO_NAMES = ["Attribute","Proficency","Potency","Item","Status","Circumstance","Untyped"];
     static BONUS_TYPE_SIGNED_TO_NAMES = ["Attribute","Attribute","Proficency","Proficency","Potency","Potency","Item","Item","Status","Status","Circumstance","Circumstance","Untyped","Untyped"];
 
-    /* Convert BONUS_TYPES to BONUS_TYPES_SIGNED */
+    /**
+     * Convert BONUS_TYPES to BONUS_TYPES_SIGNED
+     * @param {BONUS_TYPES} baseBonusType 
+     * @param {Boolean} isPos - Was the associated bonus value (int) positive or negative
+     * @returns {BONUS_TYPES_SIGNED}
+     */
     static get_signed_bonus_type(baseBonusType, isPos=true)
     {
         if(isPos){
@@ -59,6 +64,11 @@ class DEFFEND_CHECK_GLOBALS {
         }
     }
 
+    /**
+     * Convert a BONUS_TYPES_SIGNED enum to a BONUS_TYPES enum
+     * @param {BONUS_TYPES_SIGNED} signedBonusTypeEnum 
+     * @returns BONUS_TYPES
+     */
     static get_base_bonus_type(signedBonusTypeEnum){
         if(signedBonusTypeEnum >= DEFFEND_CHECK_GLOBALS.NUM_BONUS_TYPES){
             return parseInt(signedBonusTypeEnum-DEFFEND_CHECK_GLOBALS.NUM_BONUS_TYPES);
@@ -67,6 +77,11 @@ class DEFFEND_CHECK_GLOBALS {
         }
     }
 
+    /**
+     * Take signed_bonus_type enum and see if its one that represents a negative number
+     * @param {DEFFEND_CHECK_GLOBALS::BONUS_TYPES_SIGNED} signedBonusTypeEnum 
+     * @returns {Boolean} true if 
+     */
     static get_is_pos(signedBonusTypeEnum){
         if(signedBonusTypeEnum >= DEFFEND_CHECK_GLOBALS.NUM_BONUS_TYPES){
             return true;
